@@ -1,0 +1,5 @@
+From lab 1, refactor the four into the standard functional interface
+Consumer, IntConsumer
+Function, IntFunction
+BiFunction, BinaryOperator,
+Supplier, DoubleSupplier

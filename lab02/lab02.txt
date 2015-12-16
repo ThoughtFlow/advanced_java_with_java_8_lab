@@ -1,0 +1,3 @@
+Refactor 4 interfaces from lab 1 to @FunctionalInterfaces (1, 2, 3, 4)
+Refactor to use static method references where possible (2, 3)
+Refactor to use constructor references (4)

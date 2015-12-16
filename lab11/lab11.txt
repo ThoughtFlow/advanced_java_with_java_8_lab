@@ -1,0 +1,19 @@
+Use streams to implement all of these
+
+1) Print all even numbers from 0 to 100
+- Then, modify your algorithm to add only odd numbers 0, 100
+- Then, modify your algorithm to remove prime numbers
+
+2) Grep from BufferedReader
+- Count occurrences of a given search word
+- Return line for each occurrence of word (regular grep) 
+
+3) Given a list of strings, return each that is a palindrome.
+- Modify your algorithm to return the original word (not inverted)
+
+4) Implement the Fizz Buzz algorithm
+- Iterate from 1 to 100, print "Fizz" for every number divisible by 3 and "Buzz" for every number divisible by 5
+
+5) Implement the game of life
+
+

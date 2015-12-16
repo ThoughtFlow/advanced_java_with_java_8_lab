@@ -1,0 +1,5 @@
+Refactor lab 7 and make it thread safe
+- Use Read/write locks to make adding/finding/removing thread safe
+- Keep a log of every access (start time, end time) This can be in a synchronized list
+- Make sure you get no concurrent modifications error
+- Make sure you get no overlap of read and write

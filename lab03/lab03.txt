@@ -1,0 +1,2 @@
+Refactor 4 interfaces and use a default implementation for each
+Call the default implementation

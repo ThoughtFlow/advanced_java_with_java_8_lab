@@ -3,7 +3,7 @@ package lab11;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class FizzBuzzBazz
+public class FizzBuzz
 {
     public static void main(String... args)
     {

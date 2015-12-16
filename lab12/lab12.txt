@@ -1,0 +1,1 @@
+Use currying to create a grading system that uses average, best or worse test scores as final grade

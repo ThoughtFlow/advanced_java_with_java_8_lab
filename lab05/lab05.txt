@@ -1,0 +1,11 @@
+A) Use functional composition to implement this rule:
+- Must pass all exams (> 60%)
+- Must have a B average
+- Or last exam was perfect
+- Must have taken all exams
+Solution is in PredicateComposition.java
+
+B) Use Functions to create a series of functions that:
+- Double, square, cube then negate a number using andThen
+- Double, square, cube then negate a number using compose
+Solution is in FunctionalComposition.java

@@ -1,0 +1,9 @@
+Write a simple chat server:
+- ChatReceiver sets up a server socket on port 8080
+- Use telnet to connect to it
+- Send your name to establish connection on the telnet side
+- Receiver wait for telnet to send name, then responds with its own name
+- Telnet side then starts conversation
+- Only one side at a time can speak while the other is waiting
+
+Solution is in ChatReceiver. ChatConnector can be used instead of telnet.
