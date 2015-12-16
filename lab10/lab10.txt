@@ -1,1 +1,0 @@
-Refactor lab07 using a functional approach.

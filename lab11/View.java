@@ -2,6 +2,7 @@ package lab11;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class View extends JFrame
 {
     private DrawPanel panel;

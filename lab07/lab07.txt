@@ -1,4 +1,0 @@
-Create a CRUD application that stores a movie database
-- Movies can be added, found by name, returned by category and deleted
-- Movies have categories: comedy, horror, drama, romance
-

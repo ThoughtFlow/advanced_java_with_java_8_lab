@@ -1,6 +1,0 @@
-Threaded chat server:
-- Write a chat server and use telnet as client
-- Chat server has chat rooms (sports, politics, movies)
-- Chat client connects and enters chat room,line feed, name line feed
-- Now it can send and receive messages to all other participants
-- Chat server is shutdown when someone connects and sends "SHUTDOWN"

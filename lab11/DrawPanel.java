@@ -1,9 +1,11 @@
 package lab11;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.util.stream.IntStream;
 
+@SuppressWarnings("serial")
 class DrawPanel extends JPanel {
 
     private final int bacteriaSize;

@@ -37,7 +37,7 @@ public class Palindrome
         return palindromes;
     }
 
-    public static List<String> findPalindrome(List<String> list)
+    public static List<String> findPalindromeKeepOriginal(List<String> list)
     {
         return list.stream().
             map(Holder::new).
@@ -49,6 +49,19 @@ public class Palindrome
                 return IntStream.rangeClosed(0, halfWay).allMatch(i -> h.strippedWord.charAt(i) == h.strippedWord.charAt(h.strippedWord.length() - i - 1));
             }).
             map(h -> h.original).
+            collect(Collectors.toList());
+    }
+    
+    public static List<String> findPalindrome(List<String> list)
+    {
+        return list.stream().
+            map(s -> {s = s.replace(" ", ""); return s;}).
+            map(s -> {s = s.toLowerCase(); return s;}).
+            filter(s -> s.length() > 2).
+            filter(s -> {
+                int halfWay = s.length() / 2 - 1;
+                return IntStream.rangeClosed(0, halfWay).allMatch(i -> s.charAt(i) == s.charAt(s.length() - i - 1));
+            }).
             collect(Collectors.toList());
     }
 
