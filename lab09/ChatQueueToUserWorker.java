@@ -10,12 +10,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ChatQueueToUserWorker implements Runnable, MessageSink<Message> {
 
 	private final BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
+	private final MessageBroadcastWorker broadcaster;
 	private final BufferedWriter writer;
 	private final String id;
 
-	public ChatQueueToUserWorker(Socket socket, String id) throws IOException {
+	public ChatQueueToUserWorker(MessageBroadcastWorker broadcaster, Socket socket, String id) throws IOException {
+		this.broadcaster = broadcaster;
 	    writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		this.id = id;
+		broadcaster.addMessageSink(this);
 	}
 
 	@Override
@@ -23,7 +26,7 @@ public class ChatQueueToUserWorker implements Runnable, MessageSink<Message> {
 		Message nextMessage;
 		
 		try {
-		   while ((nextMessage = queue.take()) != null) {
+		   while ((nextMessage = queue.take()) != null && !(nextMessage.isLastMessage() && nextMessage.getId().equals(id))) {
 			   if (nextMessage.getId().equals(id) == false) {
 				   String formattedSenderId = !nextMessage.getId().equals("") ? "[" + nextMessage.getId() + "] "  : "";
 			      writer.write(formattedSenderId + nextMessage.getMessage());
@@ -46,6 +49,7 @@ public class ChatQueueToUserWorker implements Runnable, MessageSink<Message> {
 			
 		}
 		
+		broadcaster.removeMessageSink(this);
 	    System.out.println(this.getClass().getName() + " Done");
 	}
 

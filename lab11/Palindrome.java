@@ -7,6 +7,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Algorithm to find a palindrome:
+ * - Strip off spaces in between words
+ * - Convert all characters to same case (using lowercase in these examples)
+ * - Filter out any word that is 2 characters or less
+ * - Find the half-way point in the word and compare each character on the lower half to their counterpart on the upper half 
+ */
 public class Palindrome
 {
     public static List<String> findPalindromeImperative(List<String> list)
@@ -74,7 +81,8 @@ public class Palindrome
         "Aibohphobia",
         "ABBA",
         "A Toyota's a Toyota");
-        findPalindrome(palindromes).forEach(System.out::println);
+//        findPalindrome(palindromes).forEach(System.out::println);
+        findPalindromeKeepOriginal(palindromes).forEach(System.out::println);
 //        findPalindromeImperative(palindromes).forEach(System.out::println);
     }
 

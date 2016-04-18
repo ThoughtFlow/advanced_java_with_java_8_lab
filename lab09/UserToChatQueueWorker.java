@@ -13,6 +13,8 @@ public class UserToChatQueueWorker implements Runnable {
 	private final Socket socket; 
 	private final Category category;
 	
+	private MessageSink<Message> lastMessageSink;
+	
 	public UserToChatQueueWorker(MessageSink<Message> sink, Socket socket, Category category) throws IOException, IllegalArgumentException {
 		this.sink = sink;
 		this.socket = socket;
@@ -40,6 +42,7 @@ public class UserToChatQueueWorker implements Runnable {
 		}
 		
 	    sink.put(new Message(id, "Has left the chat room"));
+	    lastMessageSink.put(Message.makeFinaleMessage(id));
 	    
 	    try {
 	    	reader.close();
@@ -55,5 +58,9 @@ public class UserToChatQueueWorker implements Runnable {
 	    }
 	    
 	    System.out.println(getId() + " has just left " + category);
+	}
+	
+	public void setLastMessageSink(MessageSink<Message> lastMessageSink) {
+		this.lastMessageSink = lastMessageSink;
 	}
 }

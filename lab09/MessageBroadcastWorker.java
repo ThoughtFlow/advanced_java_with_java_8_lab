@@ -47,4 +47,8 @@ public class MessageBroadcastWorker implements Runnable, MessageSink<Message> {
 	public int getParticipantCount() {
 		return messageSinks.size();
 	}
+	
+	public void removeMessageSink(MessageSink<Message> messageSink) {
+		messageSinks.remove(messageSink);
+	}
 }

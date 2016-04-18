@@ -7,7 +7,7 @@ public class PredicateComposition
 {
     public static void main(String[] args)
     {
-        Predicate<Double[]> allPassed = l -> {
+        Predicate<Double[]> isAllPassed = l -> {
             for (double next : l)
             {
                 if (next < .60)
@@ -18,7 +18,7 @@ public class PredicateComposition
             return true;
         };
         
-        Predicate<Double[]> bAverage = l -> {
+        Predicate<Double[]> isBAverage = l -> {
             double sum = 0;
             for (double next : l)
             {
@@ -28,11 +28,9 @@ public class PredicateComposition
             return sum / l.length >= .80;
         };
 
-        Predicate<Double[]> lastPerfect = l -> l[l.length - 1] == 1;
+        Predicate<Double[]> isLastPerfect = l -> l[l.length - 1] == 1;
         
-        
-        
-        Predicate<Double[]> attendedAll = l ->
+        Predicate<Double[]> isAnyMissed = l ->
         {
             for (double next : l)
             {
@@ -51,7 +49,7 @@ public class PredicateComposition
         
         
 
-        Predicate<Double[]> hasPassed = allPassed.and(bAverage).or(lastPerfect).and(attendedAll.negate());
+        Predicate<Double[]> hasPassed = isAllPassed.and(isBAverage).or(isLastPerfect).and(isAnyMissed.negate());
 
         // Passed all
         Double[] scores = (Double[]) Arrays.asList(.65, .90, .90, .90, .90, .90).toArray();

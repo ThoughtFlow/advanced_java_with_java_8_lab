@@ -39,6 +39,7 @@ public class ChatConnector implements Closeable {
 		String peerLine;
 		String myLine;
 
+		System.out.println("Connected with " + peerName + " who is typing...");
 		while ((peerLine = peerReader.readLine()) != null && !END_OF_CONVERSATION.equals(peerLine)) {
 			System.out.println("[" + peerName + "] " + peerLine);
 

@@ -45,8 +45,9 @@ public class ChatServer implements Closeable {
 				}
 
 			    UserToChatQueueWorker userToChatQueueWorker = new UserToChatQueueWorker(broadcaster, newSocket, category);
-				ChatQueueToUserWorker chatQueueToUserWorker = new ChatQueueToUserWorker(newSocket, userToChatQueueWorker.getId());
-				broadcaster.addMessageSink(chatQueueToUserWorker);
+				ChatQueueToUserWorker chatQueueToUserWorker = new ChatQueueToUserWorker(broadcaster, newSocket, userToChatQueueWorker.getId());
+				userToChatQueueWorker.setLastMessageSink(chatQueueToUserWorker);
+				
 
 				threadPool.execute(userToChatQueueWorker);
 				threadPool.execute(chatQueueToUserWorker);

@@ -72,20 +72,20 @@ public class StreamGrep {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+//		
+//		try (BufferedReader bufferedReader = getReader(url)) {
+//			System.out.println("Using grepDashCWithCount - Found: " + grepDashCWithCount(bufferedReader, wordSearch));
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
-		try (BufferedReader bufferedReader = getReader(url)) {
-			System.out.println("Using grepDashCWithCount - Found: " + grepDashCWithCount(bufferedReader, wordSearch));
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try (BufferedReader bufferedReader = getReader(url)) {
-			System.out.println("Using grepDashCWithReduce - Found: " + grepDashCWithReduce(bufferedReader, wordSearch));
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try (BufferedReader bufferedReader = getReader(url)) {
+//			System.out.println("Using grepDashCWithReduce - Found: " + grepDashCWithReduce(bufferedReader, wordSearch));
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		try (BufferedReader bufferedReader = getReader(url)) {
 			System.out.println("Using grepCollect - found :");
@@ -95,13 +95,13 @@ public class StreamGrep {
 			e.printStackTrace();
 		}
 		
-		try (BufferedReader bufferedReader = getReader(url)) {
-			System.out.println("Using grepCollect2 - found :");
-			grepCollect2(bufferedReader, wordSearch).forEach(System.out::println);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try (BufferedReader bufferedReader = getReader(url)) {
+//			System.out.println("Using grepCollect2 - found :");
+//			grepCollect2(bufferedReader, wordSearch).forEach(System.out::println);
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 		
 
