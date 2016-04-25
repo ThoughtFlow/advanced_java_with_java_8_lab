@@ -127,8 +127,8 @@ public class SpliteratorFinder {
 			SpliteratorFinder finder = new SpliteratorFinder();
 			URL url = new URL("http://www.oracle.com");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
-			Spliterator<String> s = reader.lines().spliterator();
-			finder.find("oracle", s).entrySet().forEach(e -> {
+			Spliterator<String> spliterator = reader.lines().spliterator();
+			finder.find("oracle", spliterator).entrySet().forEach(e -> {
 				System.out.println("Thread " + e.getKey());
 				e.getValue().forEach(n -> System.out.println("  " + n));
 			});
