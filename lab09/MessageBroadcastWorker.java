@@ -28,7 +28,7 @@ public class MessageBroadcastWorker implements Runnable, MessageSink<Message> {
 		   }
 		}
 		catch (InterruptedException e) {
-
+			e.printStackTrace();
 		}
 		
 	    System.out.println(this.getClass().getName() + " Done");

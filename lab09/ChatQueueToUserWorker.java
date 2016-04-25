@@ -14,7 +14,7 @@ public class ChatQueueToUserWorker implements Runnable, MessageSink<Message> {
 	private final BufferedWriter writer;
 	private final String id;
 
-	public ChatQueueToUserWorker(MessageBroadcastWorker broadcaster, Socket socket, String id) throws IOException {
+	public ChatQueueToUserWorker(String id, MessageBroadcastWorker broadcaster, Socket socket) throws IOException {
 		this.broadcaster = broadcaster;
 	    writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		this.id = id;
@@ -36,17 +36,17 @@ public class ChatQueueToUserWorker implements Runnable, MessageSink<Message> {
 		   }
 		}
 		catch (IOException e) {
-
+			e.printStackTrace();
 		}
 		catch (InterruptedException e) {
-			
+			e.printStackTrace();
 		}
 		
 		try {
 			writer.close();
 		}
 		catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		
 		broadcaster.removeMessageSink(this);

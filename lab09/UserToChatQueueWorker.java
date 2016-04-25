@@ -15,19 +15,14 @@ public class UserToChatQueueWorker implements Runnable {
 	
 	private MessageSink<Message> lastMessageSink;
 	
-	public UserToChatQueueWorker(MessageSink<Message> sink, Socket socket, Category category) throws IOException, IllegalArgumentException {
+	public UserToChatQueueWorker(String id, MessageSink<Message> sink, Socket socket, Category category) throws IOException, IllegalArgumentException {
+		this.id = id;
 		this.sink = sink;
 		this.socket = socket;
 		this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.category = category;
-		
-		id = reader.readLine();
 	}
 	
-	public String getId() {
-		return id;
-	}
-
 	@Override
 	public void run() {
 		String nextMessage;
@@ -38,7 +33,7 @@ public class UserToChatQueueWorker implements Runnable {
 		   }
 		}
 		catch (IOException e) {
-
+			e.printStackTrace();
 		}
 		
 	    sink.put(new Message(id, "Has left the chat room"));
@@ -48,16 +43,17 @@ public class UserToChatQueueWorker implements Runnable {
 	    	reader.close();
 	    }
 	    catch (IOException e) {
+			e.printStackTrace();
 	    }
 	    
 	    try {
 	    	socket.close();
 	    }
 	    catch (IOException e) {
-	    	
+			e.printStackTrace();
 	    }
 	    
-	    System.out.println(getId() + " has just left " + category);
+	    System.out.println(id + " has just left " + category);
 	}
 	
 	public void setLastMessageSink(MessageSink<Message> lastMessageSink) {

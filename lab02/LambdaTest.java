@@ -19,5 +19,9 @@ public class LambdaTest {
 	
 	Interface4 i4 = () -> Math.PI;
 	System.out.println(i4.getPi());
+	
+	// Interface 4 cannot be converted into a constructor reference - need a new interface
+	Interface5 i5 = Double::new;
+	System.out.println(i5.getPi(Math.PI));
 	}
 }
