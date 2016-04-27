@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class SpliteratorFinder {
 			futures.add(executor.submit(next));
 		}
 
-		Map<String, List<String>> mergedList = new HashMap<>();
+		Map<String, List<String>> mergedList = new LinkedHashMap<>();
 		// Collect the results
 		for (Future<FoundHolder<String>> nextFuture : futures) {
 			try {
@@ -128,7 +128,9 @@ public class SpliteratorFinder {
 			URL url = new URL("http://www.oracle.com");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 			Spliterator<String> spliterator = reader.lines().spliterator();
-			finder.find("oracle", spliterator).entrySet().forEach(e -> {
+			Map<String, List<String>> result = finder.find("oracle", spliterator);
+			
+			result.entrySet().forEach(e -> {
 				System.out.println("Thread " + e.getKey());
 				e.getValue().forEach(n -> System.out.println("  " + n));
 			});
@@ -144,7 +146,9 @@ public class SpliteratorFinder {
 			}
 
 			SpliteratorFinder finder = new SpliteratorFinder();
-			finder.find("10", list.spliterator()).entrySet().forEach(e -> {
+			Map<String, List<String>> result = finder.find("10", list.spliterator());
+			
+			result.entrySet().forEach(e -> {
 				System.out.println("Thread " + e.getKey());
 				e.getValue().forEach(n -> System.out.println("  " + n));
 			});

@@ -62,6 +62,7 @@ public class SpliteratorSpliter {
 	public static void main(String... args) throws Exception {
 
 		{
+			// ArrayList
 			List<String> list = new ArrayList<>();
 			for (int index = 0; index < 4096; ++index) {
 				list.add(Integer.toString(index));
@@ -71,6 +72,7 @@ public class SpliteratorSpliter {
 		}
 
 		{
+			// A small LinkedList
 			List<String> list = new LinkedList<>();
 			for (int index = 0; index < 4096; ++index) {
 				list.add(Integer.toString(index));
@@ -80,6 +82,7 @@ public class SpliteratorSpliter {
 		}
 		
 		{
+			// A big LinkedList 
 			List<String> list = new LinkedList<>();
 			for (int index = 0; index < 1000000; ++index) {
 				list.add(Integer.toString(index));
@@ -89,6 +92,7 @@ public class SpliteratorSpliter {
 		}
 		
 		{
+			// A HashSet
 			Set<String> list = new HashSet<>();
 			for (int index = 0; index < 4096; ++index) {
 				list.add(Integer.toString(index));
@@ -99,6 +103,7 @@ public class SpliteratorSpliter {
 		
 		
 		{
+			// A LinkedHashSet
 			Set<String> list = new LinkedHashSet<>();
 			for (int index = 0; index < 4096; ++index) {
 				list.add(Integer.toString(index));
@@ -108,6 +113,7 @@ public class SpliteratorSpliter {
 		}
 
 		{
+			// A BufferedReader
 			URL url = new URL("http://www.oracle.com");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 			Spliterator<String> firstSpliterator = reader.lines().spliterator();
