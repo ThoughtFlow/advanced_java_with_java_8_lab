@@ -11,9 +11,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SpliteratorSpliter {
 
+	private static final int MAX_SPLITERATORS = 8;
+	
 	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long dataSize, int maxSpliterators) {
 
 		if (handles.size() < maxSpliterators) {
@@ -35,7 +38,7 @@ public class SpliteratorSpliter {
 		List<Spliterator<T>> spliterators = new LinkedList<>();
 		Spliterator<T> firstSpliterator = collection.spliterator();
 		spliterators.add(firstSpliterator);
-		splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / 8, 8);
+		splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / MAX_SPLITERATORS, MAX_SPLITERATORS);
 		
 		return spliterators;
 	}
@@ -45,6 +48,7 @@ public class SpliteratorSpliter {
 		// Print the spliterator data distribution
 		System.out.println("==============");
 		System.out.println("Spliterator estimated size vs. known size: "+ sourceType);
+		System.out.println("Characteristics: " + getCharacteristics(spliterators.get(0)));
 		
 		int totalEstimatedSize = 0;
 		int totalExactSize = 0;
@@ -54,11 +58,27 @@ public class SpliteratorSpliter {
 			totalExactSize += next.getExactSizeIfKnown() > -1L ?  next.getExactSizeIfKnown() : 0;
 		}
 		
-		spliterators.forEach(s -> System.out.println(s.estimateSize() + ":" + s.getExactSizeIfKnown()));
+		AtomicInteger counter = new AtomicInteger(1);
+		spliterators.forEach(s -> System.out.println("Slice " + counter.getAndIncrement() + ": " + s.estimateSize() + ":" + s.getExactSizeIfKnown()));
 		System.out.println("Total estimated size: " + totalEstimatedSize);
 		System.out.println("Total exact size: " + totalExactSize);
 	}
 
+	public static String getCharacteristics(Spliterator<?> spliterator) {
+		StringBuilder characteristics = new StringBuilder();
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.ORDERED) ? "ORDERED, " : "");
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.DISTINCT) ? "DISTINCT, " : "");
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.SORTED) ? "SORTED, " : "");
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.SIZED) ? "SIZED, " : "");
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.NONNULL) ? "NONNULL, " : "");
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.IMMUTABLE) ? "IMMUTABLE, " : "");
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.CONCURRENT) ? "CONCURRENT, " : "");
+		characteristics.append(spliterator.hasCharacteristics(Spliterator.SUBSIZED) ? "SUBSIZED, " : "");
+		
+		int lastComma = characteristics.lastIndexOf(", ");
+		return lastComma > 0 ? characteristics.substring(0, lastComma) : characteristics.toString();
+	}
+	
 	public static void main(String... args) throws Exception {
 
 		{
@@ -78,7 +98,7 @@ public class SpliteratorSpliter {
 				list.add(Integer.toString(index));
 			}
 			
-			printSplitResult(doSplit(list), "LinkedList");
+			printSplitResult(doSplit(list), "Small LinkedList");
 		}
 		
 		{
@@ -88,28 +108,27 @@ public class SpliteratorSpliter {
 				list.add(Integer.toString(index));
 			}
 			
-			printSplitResult(doSplit(list), "LinkedList");
+			printSplitResult(doSplit(list), "Big LinkedList");
 		}
 		
 		{
 			// A HashSet
-			Set<String> list = new HashSet<>();
+			Set<String> set = new HashSet<>();
 			for (int index = 0; index < 4096; ++index) {
-				list.add(Integer.toString(index));
+				set.add(Integer.toString(index));
 			}
 			
-			printSplitResult(doSplit(list), "HashSet");
+			printSplitResult(doSplit(set), "HashSet");
 		}
-		
 		
 		{
 			// A LinkedHashSet
-			Set<String> list = new LinkedHashSet<>();
+			Set<String> set = new LinkedHashSet<>();
 			for (int index = 0; index < 4096; ++index) {
-				list.add(Integer.toString(index));
+				set.add(Integer.toString(index));
 			}
 			
-			printSplitResult(doSplit(list), "LinkedHashSet");
+			printSplitResult(doSplit(set), "LinkedHashSet");
 		}
 
 		{

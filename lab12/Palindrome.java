@@ -80,7 +80,9 @@ public class Palindrome
         "As I pee sir I see Pisa",
         "Aibohphobia",
         "ABBA",
-        "A Toyota's a Toyota");
+        "A Toyota's a Toyota",
+        "This is not a palindrome");
+        System.out.println("These are palindromes: " );
 //        findPalindrome(palindromes).forEach(System.out::println);
         findPalindromeKeepOriginal(palindromes).forEach(System.out::println);
 //        findPalindromeImperative(palindromes).forEach(System.out::println);

@@ -129,13 +129,14 @@ public class SpliteratorFinder {
 
 		// Try with an unknown size
 		{
+			final String stringToFind = "java";
 			System.out.println("=================");
 			System.out.println("Unknown size test");
 			SpliteratorFinder finder = new SpliteratorFinder();
 			URL url = new URL("https://www.oracle.com");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 			Spliterator<String> spliterator = reader.lines().spliterator();
-			Map<String, List<String>> result = finder.find("java", spliterator);
+			Map<String, List<String>> result = finder.find(stringToFind, spliterator);
 			
 			result.entrySet().forEach(e -> {
 				System.out.println("Thread " + e.getKey());
@@ -147,6 +148,7 @@ public class SpliteratorFinder {
 		
 		// Now try with the a fixed size collection
 		{
+			final String stringToFind = "10";
 			System.out.println("=================");
 			System.out.println("Fixed size test");
 			List<String> list = new ArrayList<>();
@@ -155,7 +157,7 @@ public class SpliteratorFinder {
 			}
 
 			SpliteratorFinder finder = new SpliteratorFinder();
-			Map<String, List<String>> result = finder.find("10", list.spliterator());
+			Map<String, List<String>> result = finder.find(stringToFind, list.spliterator());
 			
 			result.entrySet().forEach(e -> {
 				System.out.println("Thread " + e.getKey());
