@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * This example shows how a master thread can wait for 3 worker threads to each complete their work until the master thread continues.
+ */
 public class CountDownLatchExample {
 
 	private static final int NUMBER_OF_THREADS = 3;
@@ -16,9 +19,11 @@ public class CountDownLatchExample {
 		
 		List<Thread> threads = new ArrayList<Thread>(NUMBER_OF_THREADS);
 		CountDownLatch latch = new CountDownLatch(3);
+		int workingSeconds = 0;
 		
 		for (int index = 0; index < NUMBER_OF_THREADS; ++index) {
-			Thread nextThread = new Thread(new Worker("Thread: " + new Integer(index).toString(), latch, (index * 2 + 1) * 1000));
+			String workerId = "Thread: " + new Integer(index);
+			Thread nextThread = new Thread(new Worker(workerId, latch, ++workingSeconds + 2));
 			threads.add(nextThread);
 		}
 		
@@ -26,7 +31,9 @@ public class CountDownLatchExample {
 			nextThread.start();
 		}
 
+		log("Waiting for all threads to finish...");
 		latch.await();
+		log("Waiting for all threads to finish...Done");
 	}
 
 	private static class Worker implements Runnable {
@@ -35,10 +42,10 @@ public class CountDownLatchExample {
 		private final CountDownLatch latch;
 		private final long delay;
 
-		public Worker(String name, CountDownLatch latch, long delay) {
+		public Worker(String name, CountDownLatch latch, int delayInSeconds) {
 			this.name = name;
 			this.latch = latch;
-			this.delay = delay;
+			this.delay = delayInSeconds * 1000;
 		}
 
 		@Override

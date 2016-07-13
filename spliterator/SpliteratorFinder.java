@@ -25,6 +25,7 @@ public class SpliteratorFinder {
 
 	public Map<String, List<String>> find(String searchString, Spliterator<String> firstSpliterator) {
 
+		FoundHolder.resetCount();
 		List<Future<FoundHolder<String>>> futures = new LinkedList<>();
 		List<Callable<FoundHolder<String>>> callables = new LinkedList<>();
 
@@ -81,7 +82,7 @@ public class SpliteratorFinder {
 		executor.shutdownNow();
 	}
 
-	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long dataSize, int maxSpliterators) {
+	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long targetSpliteratorSize, int maxSpliterators) {
 
 		if (handles.size() < maxSpliterators) {
 			Spliterator<T> peerSpliterator = spliterator.trySplit();
@@ -89,9 +90,9 @@ public class SpliteratorFinder {
 			if (peerSpliterator != null) {
 				handles.add(peerSpliterator);
 				
-				if (peerSpliterator.getExactSizeIfKnown() > dataSize) {
-					splitInX(peerSpliterator, handles, dataSize, maxSpliterators);
-					splitInX(spliterator, handles, dataSize, maxSpliterators);
+				if (peerSpliterator.getExactSizeIfKnown() > targetSpliteratorSize) {
+					splitInX(peerSpliterator, handles, targetSpliteratorSize, maxSpliterators);
+					splitInX(spliterator, handles, targetSpliteratorSize, maxSpliterators);
 				}
 			}
 		}
@@ -103,6 +104,10 @@ public class SpliteratorFinder {
 		private final String id;
 		private List<T> foundItems = new LinkedList<T>();
 
+		public static void resetCount() {
+			count = new AtomicInteger(0);
+		}
+		
 		public FoundHolder() {
 			id = Integer.toString(count.incrementAndGet());
 		}
@@ -124,11 +129,13 @@ public class SpliteratorFinder {
 
 		// Try with an unknown size
 		{
+			System.out.println("=================");
+			System.out.println("Unknown size test");
 			SpliteratorFinder finder = new SpliteratorFinder();
-			URL url = new URL("http://www.oracle.com");
+			URL url = new URL("https://www.oracle.com");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 			Spliterator<String> spliterator = reader.lines().spliterator();
-			Map<String, List<String>> result = finder.find("oracle", spliterator);
+			Map<String, List<String>> result = finder.find("java", spliterator);
 			
 			result.entrySet().forEach(e -> {
 				System.out.println("Thread " + e.getKey());
@@ -140,6 +147,8 @@ public class SpliteratorFinder {
 		
 		// Now try with the a fixed size collection
 		{
+			System.out.println("=================");
+			System.out.println("Fixed size test");
 			List<String> list = new ArrayList<>();
 			for (int index = 0; index < 4096; ++index) {
 				list.add(Integer.toString(index));

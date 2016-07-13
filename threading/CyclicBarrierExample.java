@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
+/**
+ * This example shows how 3 worker threads can wait at a rendez-vous point before continuing.
+ */
 public class CyclicBarrierExample {
 
 	private static final int NUMBER_OF_THREADS = 3;
@@ -16,10 +19,12 @@ public class CyclicBarrierExample {
 	public static void main(String[] args) throws InterruptedException, BrokenBarrierException {
 		
 		List<Thread> threads = new ArrayList<Thread>(NUMBER_OF_THREADS);
-		CyclicBarrier barrier = new CyclicBarrier(3);
+		CyclicBarrier sharedBarrier = new CyclicBarrier(3);
+		int workingSeconds = 0;
 		
 		for (int index = 0; index < NUMBER_OF_THREADS; ++index) {
-			Thread nextThread = new Thread(new Worker("Thread: " + new Integer(index).toString(), barrier, (index * 2 + 1) * 1000));
+			String workerId = "Thread: " + new Integer(index);
+			Thread nextThread = new Thread(new Worker(workerId, sharedBarrier, ++workingSeconds + 2));
 			threads.add(nextThread);
 		}
 		
@@ -27,21 +32,23 @@ public class CyclicBarrierExample {
 			nextThread.start();
 		}
 		
+		log("Waiting for all threads to finish...");
 		for (Thread nextThread : threads) {
 			nextThread.join();
 		}
+		log("Waiting for all threads to finish...Done");
 	}
 
 	private static class Worker implements Runnable {
 
 		private final String name;
-		private final CyclicBarrier barrier;
+		private final CyclicBarrier rendezVous;
 		private final long delay;
 
-		public Worker(String name, CyclicBarrier barrier, long delay) {
+		public Worker(String name, CyclicBarrier barrier, int delayInSeconds) {
 			this.name = name;
-			this.barrier = barrier;
-			this.delay = delay;
+			this.rendezVous = barrier;
+			this.delay = delayInSeconds * 1000;
 		}
 
 
@@ -58,7 +65,7 @@ public class CyclicBarrierExample {
 
 			try {
 				log("Thread " + name + " is waiting...");
-				barrier.await();
+				rendezVous.await();
 			} catch (InterruptedException e) {
 				log("Thread " + name + " is waiting...interupted");
 

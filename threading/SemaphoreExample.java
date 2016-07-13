@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+/**
+ * This example shows how semaphores can be used to abstract licenses. Each worker thread must first obtain a license before continuing and must wait if there are no more license remaining.
+ */
 public class SemaphoreExample {
 
 	private static final int NUMBER_OF_THREADS = 5;

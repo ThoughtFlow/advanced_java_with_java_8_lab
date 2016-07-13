@@ -43,35 +43,33 @@ public class PredicateComposition
             return false;
         };
 
-        
-        
-        
-        
-        
-
         Predicate<Double[]> hasPassed = isAllPassed.and(isBAverage).or(isLastPerfect).and(isAnyMissed.negate());
 
-        // Passed all
+        // True: Passed all
         Double[] scores = (Double[]) Arrays.asList(.65, .90, .90, .90, .90, .90).toArray();
         System.out.println(hasPassed.test(scores));
 
-        // Not all passed
+        // False: Not all passed
         scores = (Double[]) Arrays.asList(.59, .90, .90, .90, .90, .9).toArray();
         System.out.println(hasPassed.test(scores));
 
-        // C average - fail
+        // False: C average - fail
         scores = (Double[]) Arrays.asList(.70, .70, .70, .70, .70, .70).toArray();
         System.out.println(hasPassed.test(scores));
 
-        // C average but aced last
+        // True: C average but aced last
         scores = (Double[]) Arrays.asList(.70, .70, .70, .70, .70, 1d).toArray();
         System.out.println(hasPassed.test(scores));
 
-        // Failed first by scored perfect on last
+        // True: Failed first by scored perfect on last
         scores = (Double[]) Arrays.asList(.59, .90, .90, .90, .90, 1d).toArray();
         System.out.println(hasPassed.test(scores));
+        
+        // False: same as previous but missed a test
+        scores = (Double[]) Arrays.asList(.59, .90, .90, .90, 0d, 1d).toArray();
+        System.out.println(hasPassed.test(scores));
 
-        // Perfect but missed last - fail!
+        // False: Perfect but missed last - fail!
         scores = (Double[]) Arrays.asList(1d, 1d, 1d, 1d, 1d, 0d).toArray();
         System.out.println(hasPassed.test(scores));
     }

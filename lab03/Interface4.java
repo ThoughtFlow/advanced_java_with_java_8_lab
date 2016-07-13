@@ -5,7 +5,7 @@ public interface Interface4 {
 
 	public Double getPi();
 	
-	default Double defaultGetPi() {
+	static Double defaultGetPi() {
 		return Math.PI;
 	}
 	

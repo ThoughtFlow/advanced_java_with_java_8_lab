@@ -7,10 +7,13 @@ import java.util.concurrent.Exchanger;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * This example shows how threads can establish a rendez-vous point to exchange data. 
+ */
 public class ExchangerExample {
 
 	// If you choose an odd number, one of the worker threads will timeout waiting for the exchange.
-	private static final int NUMBER_OF_THREADS = 9;
+	private static final int NUMBER_OF_THREADS = 8;
 	
 	public static void log(String message) {
 		System.out.println(System.currentTimeMillis() + ": " + message);
@@ -19,10 +22,12 @@ public class ExchangerExample {
 	public static void main(String[] args) throws InterruptedException, BrokenBarrierException {
 		
 		List<Thread> threads = new ArrayList<Thread>(NUMBER_OF_THREADS);
-		Exchanger<String> barrier = new Exchanger<>();
+		Exchanger<String> exchanger = new Exchanger<>();
+		int workingSeconds = 0;
 		
 		for (int index = 0; index < NUMBER_OF_THREADS; ++index) {
-			Thread nextThread = new Thread(new Worker("Thread: " + new Integer(index).toString(), barrier, (index * 2 + 1) * 1000));
+			String workerId = "Thread: " + new Integer(index);
+			Thread nextThread = new Thread(new Worker(workerId, exchanger, ++workingSeconds + 2));
 			threads.add(nextThread);
 		}
 		
@@ -30,9 +35,11 @@ public class ExchangerExample {
 			nextThread.start();
 		}
 		
+		log("Waiting for all threads to finish...");
 		for (Thread nextThread : threads) {
 			nextThread.join();
 		}
+		log("Waiting for all threads to finish...Done");
 	}
 
 	private static class Worker implements Runnable {
@@ -41,10 +48,10 @@ public class ExchangerExample {
 		private final Exchanger<String> exchanger;
 		private final long delay;
 
-		public Worker(String name, Exchanger<String> exchanger, long delay) {
+		public Worker(String name, Exchanger<String> exchanger, int delayInSeconds) {
 			this.name = name;
 			this.exchanger = exchanger;
-			this.delay = delay;
+			this.delay = delayInSeconds * 1000;
 		}
 
 		@Override
@@ -53,7 +60,7 @@ public class ExchangerExample {
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
-
+				log("Thread " + name + " is working...interupted");
 			}
 
 			try {
