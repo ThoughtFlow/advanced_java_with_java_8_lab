@@ -44,7 +44,7 @@ public class Promises {
 	public static void main(String... args) throws InterruptedException, ExecutionException {
 
 		{
-			printTestHeader("All tasks run under 1 thread asynchronously");
+			printTestHeader("All tasks run under same thread sequentially using the common fork-join thread pool");
 			CompletableFuture<Integer> task1 = CompletableFuture.supplyAsync(() -> doTask(true));
 			CompletableFuture<Integer> task2 = task1.thenApply(i -> i * 2);
 			CompletableFuture<Integer> task3 = task2.thenApply(i -> (int) Math.pow(i, 2));
@@ -57,7 +57,7 @@ public class Promises {
 		}
 		
 		{
-			printTestHeader("All tasks run under 1 thread synchronously");
+			printTestHeader("All tasks run under same thread sequentially using this thread");
 			CompletableFuture<Integer> task1 = new CompletableFuture<>();
 			CompletableFuture<Integer> task2 = task1.thenApply(i -> i * 2);
 			CompletableFuture<Integer> task3 = task2.thenApply(i -> (int) Math.pow(i, 2));
@@ -68,7 +68,7 @@ public class Promises {
 		}
 		
 		{
-			printTestHeader("Task 1 & 3 run in multiple parallel threads, 2 and 4 run in one thread");
+			printTestHeader("Task 1 & 3 run in parallel on multiple threads, 2 and 4 run sequentially on any previous task thread");
 			CompletableFuture<Integer> task1a = CompletableFuture.supplyAsync(() -> doTask(true));
 			CompletableFuture<Integer> task1b = CompletableFuture.supplyAsync(() -> doTask(true));
 			CompletableFuture<Integer> task1c = CompletableFuture.supplyAsync(() -> doTask(true));
@@ -90,7 +90,8 @@ public class Promises {
 		}
 		
 		{
-			printTestHeader("Task 1 & 3 run in multiple parallel threads, 2 and 4 run in one thread - with exception handling");
+			printTestHeader("Task 1 & 3 run in parallel on multiple threads, 2 and 4 run sequentially on any previous task thread - " +
+						    "with exception handling");
 			CompletableFuture<Integer> task1a = CompletableFuture.supplyAsync(() -> doTask(false)).exceptionally(e -> 1);
 			CompletableFuture<Integer> task1b = CompletableFuture.supplyAsync(() -> doTask(true));
 			CompletableFuture<Integer> task1c = CompletableFuture.supplyAsync(() -> doTask(true));
@@ -113,7 +114,8 @@ public class Promises {
 		}
 		
 		{
-			printTestHeader("Task 1 & 3 run in multiple parallel threads, 2 and 4 run in one thread - with manual exception handling");
+			printTestHeader("Task 1 & 3 run in parallel on multiple threads, 2 and 4 run sequentially on any previous task thread - " +
+					        "with manual exception handling");
 			CompletableFuture<Integer> task1a = new CompletableFuture<>();
 			CompletableFuture<Integer> task1b = new CompletableFuture<>();
 			CompletableFuture<Integer> task1c = new CompletableFuture<>();
@@ -145,7 +147,8 @@ public class Promises {
 		}
 		
 		{
-			printTestHeader("Task 1 & 3 run in multiple parallel threads, 2 and 4 run in one thread - using whenComplete");
+			printTestHeader("Task 1 & 3 run in parallel on multiple threads, 2 and 4 run sequentially on any previous task thread - " +
+		                    "using whenComplete");
 			CompletableFuture<Integer> task1a = new CompletableFuture<>();
 			CompletableFuture<Integer> task1b = new CompletableFuture<>();
 			CompletableFuture<Integer> task1c = new CompletableFuture<>();
