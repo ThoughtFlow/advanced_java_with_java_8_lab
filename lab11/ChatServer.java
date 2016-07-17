@@ -1,4 +1,4 @@
-package lab08;
+package lab11;
 
 import java.io.Closeable;
 import java.io.IOException;

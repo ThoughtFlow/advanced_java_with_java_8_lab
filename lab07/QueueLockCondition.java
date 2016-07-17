@@ -1,4 +1,4 @@
-package lab09;
+package lab07;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReadWriteLock;

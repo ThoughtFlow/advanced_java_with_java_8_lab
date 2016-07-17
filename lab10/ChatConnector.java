@@ -1,4 +1,4 @@
-package lab07;
+package lab10;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,4 +1,4 @@
-package lab11;
+package lab09;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

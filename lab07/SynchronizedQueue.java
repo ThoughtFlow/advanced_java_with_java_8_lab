@@ -1,4 +1,4 @@
-package lab09;
+package lab07;
 
 public interface SynchronizedQueue {
 	

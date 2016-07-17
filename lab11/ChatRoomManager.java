@@ -1,4 +1,4 @@
-package lab08;
+package lab11;
 
 import java.util.HashMap;
 import java.util.LinkedList;
