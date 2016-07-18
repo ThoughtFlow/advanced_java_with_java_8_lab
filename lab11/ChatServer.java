@@ -14,13 +14,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import scratch.NioEchoServer;
-
 public class ChatServer implements Runnable, Closeable {
 	
 	private static final String BYE_MESSAGE = "BYE";
 
-	private static final Logger logger = Logger.getLogger(NioEchoServer.class.getName());
+	private static final Logger logger = Logger.getLogger(ChatServer.class.getName());
 	
 	private final ChatRoomManager chatRoomManager = new ChatRoomManager();
 	private final InetSocketAddress daemonAddress;
