@@ -13,28 +13,6 @@ public class ThreadedPrimeNumberFinder {
 	private static final int K_SLICES = 1000;
 	private static final int K = 1000;
 
-	public static void main(String[] args) throws InterruptedException, ExecutionException {
-		List<PrimeFinder> primeFinders = new ArrayList<>(K_SLICES);
-		List<Future<Integer>> futures = new ArrayList<>(K_SLICES);
-		ExecutorService pool = Executors.newFixedThreadPool(5);
-		int totalPrimesFound = 0;
-
-		for (int index = 0; index < K_SLICES; ++index) {
-			primeFinders.add(new PrimeFinder(index * 1000, index * K + K - 1));
-		}
-
-		for (Callable<Integer> nextCallable : primeFinders) {
-			futures.add(pool.submit(nextCallable));			
-		}
-
-		for (Future<Integer> nextFuture : futures) {
-			totalPrimesFound += nextFuture.get();
-		}
-		
-		System.out.println("Total primes found: " + totalPrimesFound);
-		pool.shutdown();
-	}
-
 	private static class PrimeFinder implements Callable<Integer> {
 
 		private final int startRange;
@@ -71,5 +49,24 @@ public class ThreadedPrimeNumberFinder {
 
 			return isPrime;
 		}
+	}
+	
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		List<PrimeFinder> primeFinders = new ArrayList<>(K_SLICES);
+		ExecutorService pool = Executors.newFixedThreadPool(5);
+		int totalPrimesFound = 0;
+
+		for (int index = 0; index < K_SLICES; ++index) {
+			primeFinders.add(new PrimeFinder(index * 1000, index * K + K - 1));
+		}
+		
+		List<Future<Integer>> futures = pool.invokeAll(primeFinders);
+
+		for (Future<Integer> nextFuture : futures) {
+			totalPrimesFound += nextFuture.get();
+		}
+		
+		System.out.println("Total primes found: " + totalPrimesFound);
+		pool.shutdown();
 	}
 }

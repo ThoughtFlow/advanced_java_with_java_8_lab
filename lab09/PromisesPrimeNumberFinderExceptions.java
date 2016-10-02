@@ -8,22 +8,6 @@ public class PromisesPrimeNumberFinderExceptions {
 	private static final int K_SLICES = 1000;
 	private static final int K = 1000;
 
-	public static void main(String[] args) throws InterruptedException, ExecutionException {
-		CompletableFuture<Integer> promise = CompletableFuture.completedFuture(0);
-
-		for (int index = -1; index < K_SLICES; ++index) {
-			int range = index;
-			CompletableFuture<Integer> nextPromise = CompletableFuture.supplyAsync(() -> countPrimes(range * K, range * K + K - 1)).exceptionally(e -> 0);
-			
-			// Using whenComplete to print the error message.
-// 			CompletableFuture<Integer> nextPromise = CompletableFuture.supplyAsync(() -> countPrimes(range * K, range * K + K - 1)).
-// 					whenComplete((i, e) -> {if (e != null) System.err.println("Exception caught - continuing: " + e.getMessage());}).exceptionally(i -> 0);
-			promise = promise.thenCombine(nextPromise, (first, second) -> first + second);
-		}
-
-		System.out.println("Total primes found: " + promise.get());
-	}
-
 	private static Integer countPrimes(int startRange, int endRange) {
 		int primesFound = 0;
 
@@ -53,5 +37,22 @@ public class PromisesPrimeNumberFinderExceptions {
 		} 
 
 		return isPrime;
+	}
+	
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		CompletableFuture<Integer> promise = CompletableFuture.completedFuture(0);
+
+		for (int index = -1; index < K_SLICES; ++index) {
+			int range = index;
+			CompletableFuture<Integer> nextPromise = 
+					CompletableFuture.supplyAsync(() -> countPrimes(range * K, range * K + K - 1)).exceptionally(e -> 0);
+			
+			// Using whenComplete to print the error message.
+ 			// CompletableFuture<Integer> nextPromise = CompletableFuture.supplyAsync(() -> countPrimes(range * K, range * K + K - 1)).
+ 			// 		whenComplete((i, e) -> {if (e != null) System.err.println("Exception caught - continuing: " + e.getMessage());}).exceptionally(i -> 0);
+			promise = promise.thenCombine(nextPromise, (first, second) -> first + second);
+		}
+
+		System.out.println("Total primes found: " + promise.get());
 	}
 }

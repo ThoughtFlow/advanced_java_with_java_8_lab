@@ -97,7 +97,5 @@ public class Palindrome
         {
             this.original = original;
         }
-
-
     }
 }

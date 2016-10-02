@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 public class ChatServer implements Runnable, Closeable {
 	
+	private static final String USAGE = "USAGE: ChatServer port";
 	private static final String BYE_MESSAGE = "BYE";
-
 	private static final Logger logger = Logger.getLogger(ChatServer.class.getName());
 	
 	private final ChatRoomManager chatRoomManager = new ChatRoomManager();
@@ -192,19 +192,28 @@ public class ChatServer implements Runnable, Closeable {
 		destinationUserData.getSelectionKey().interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		if (args.length != 1) {
-			System.err.println("USAGE: ChatServer port");
+			System.err.println(USAGE);
 		} 
 		else {
-			final int port = Integer.parseInt(args[0]);
-			final InetSocketAddress inetSocketAddress = new InetSocketAddress(port);
-			final ChatServer chatServer = new ChatServer(inetSocketAddress);
-			
-			// start the server in its own thread
-			Thread serverThread = new Thread(chatServer);
-			serverThread.start();
-			serverThread.join();
+			try {
+				final int port = Integer.parseInt(args[0]);
+				final InetSocketAddress inetSocketAddress = new InetSocketAddress(port);
+				final ChatServer chatServer = new ChatServer(inetSocketAddress);
+				
+				// start the server in its own thread
+				Thread serverThread = new Thread(chatServer);
+				serverThread.start();
+				serverThread.join();
+			}
+			catch (NumberFormatException exception) {
+				System.err.println("Please enter a valid number for the port");
+				System.err.println(USAGE);
+			}
+			catch (InterruptedException exception) {
+				exception.printStackTrace();
+			}
 		}
 	}
 }

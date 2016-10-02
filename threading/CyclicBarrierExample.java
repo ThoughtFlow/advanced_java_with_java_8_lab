@@ -56,23 +56,23 @@ public class CyclicBarrierExample {
 		public void run() {
 
 			try {
-				log("Thread " + name + " is working...");
+				log(name + " is working...");
 				Thread.sleep(delay);
-				log("Thread " + name + " is working...done");
+				log(name + " is working...done");
 			} catch (InterruptedException e) {
-				log("Thread " + name + " is working...interupted");
+				log(name + " is working...interrupted");
 			}
 
 			try {
-				log("Thread " + name + " is waiting...");
+				log(name + " is waiting...");
 				rendezVous.await();
 			} catch (InterruptedException e) {
-				log("Thread " + name + " is waiting...interupted");
+				log(name + " is waiting...interrupted");
 
 			} catch (BrokenBarrierException e) {
-				log("Thread " + name + " is waiting...interupted");
+				log(name + " is waiting...interrupted");
 			}
-			log("Thread " + name + " is waiting...done");
+			log(name + " is waiting...done");
 		}
 	}
 }

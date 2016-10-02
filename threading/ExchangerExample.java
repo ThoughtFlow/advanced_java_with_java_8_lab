@@ -13,7 +13,7 @@ import java.util.concurrent.TimeoutException;
 public class ExchangerExample {
 
 	// If you choose an odd number, one of the worker threads will timeout waiting for the exchange.
-	private static final int NUMBER_OF_THREADS = 8;
+	private static final int NUMBER_OF_THREADS = 9;
 	
 	public static void log(String message) {
 		System.out.println(System.currentTimeMillis() + ": " + message);

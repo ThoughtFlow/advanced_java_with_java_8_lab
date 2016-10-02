@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class FunctionalMovieDb implements MovieDb {
@@ -22,8 +23,6 @@ public class FunctionalMovieDb implements MovieDb {
 		
 		// Can use this method...
 //		categories.forEach(category -> database.computeIfAbsent(category, k -> new LinkedList<Movie>()));
-		
-		// ...Or this method
 //		categories.forEach(category -> database.compute(category, (k, v) -> {v.add(movieToAdd); return v;}));
 		
 		// ...Or this method
@@ -42,24 +41,16 @@ public class FunctionalMovieDb implements MovieDb {
 
 	@Override
 	public Movie find(String name) {
-		// Can't refactor because foundMovie is immutable within a lambda
-		Movie foundMovie = null;
-		
-		Iterator<List<Movie>> iterator = database.values().iterator();
+		// Can't use a simple Movie class because it will be immutable within lambda. 
+		// When can always use an AtomicReference to set the value.
+		AtomicReference<Movie> foundMovie = new AtomicReference<>();
 
-		while (iterator.hasNext() && foundMovie == null) {
-			List<Movie> nextList = iterator.next();
+		Consumer<Movie> consumer = nextTitle -> {if (nextTitle.getName().equals(name)) foundMovie.set(nextTitle);};
+		database.values().forEach(nextList -> nextList.forEach(consumer));
 
-			for (Movie nextMovie : nextList) {
-				if (nextMovie.getName().equals(name)) {
-					foundMovie = nextMovie;
-					break;
-				}
-			}
-		}
-
-		return foundMovie;
+		return foundMovie.get();
 	}
+	
 	
 	@Override
 	public List<String> getByCategory(Category category) {
@@ -83,6 +74,6 @@ public class FunctionalMovieDb implements MovieDb {
 		);
 
 		// Can't support this with lists
-		return false;
+		return find(name) == null;
 	}
 }

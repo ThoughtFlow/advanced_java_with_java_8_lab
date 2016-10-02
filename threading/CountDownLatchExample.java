@@ -52,11 +52,11 @@ public class CountDownLatchExample {
 		public void run() {
 
 			try {
-				log("Thread " + name + " is working...");
+				log(name + " is working...");
 				Thread.sleep(delay);
-				log("Thread " + name + " is working...done");
+				log(name + " is working...done");
 			} catch (InterruptedException e) {
-				log("Thread " + name + " is working...interupted");
+				log(name + " is working...interupted");
 			}
 
 			latch.countDown();

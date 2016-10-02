@@ -8,17 +8,25 @@ public class StreamFun {
 	public static void main(String... args) {
 
 		{
+			// Part a)
 			// Print only even numbers
+			System.out.println("Printing even numbers from 0 to 100...");
 			IntStream.rangeClosed(0, 100).filter(i -> i % 2 == 0).forEach(System.out::println);
+			System.out.println("Printing even numbers from 0 to 100...Done");
 		}
 
 		{
+			// Part b)
 			// Print the sum of odd numbers from 0 to 100
 			System.out.println("The sum of odd numbers from 0 to 100 is: "
 					+ IntStream.rangeClosed(0, 100).filter(i -> i % 2 == 1).reduce(0, (l, r) -> l + r));
+			// Can also use sum instead of reduce on IntStream
+			// System.out.println("The sum of odd numbers from 0 to 100 is: "
+			//		+ IntStream.rangeClosed(0, 100).filter(i -> i % 2 == 1).sum());
 		}
-
+		
 		{
+			// Part c)
 			// Print the sum of non-prime odd numbers from 0 to 100
 			IntPredicate isIndivisible = i -> {
 				for (int n = 2; n <= Math.sqrt(i); ++n)
@@ -27,15 +35,16 @@ public class StreamFun {
 
 				return true;
 			};
+			
 			IntPredicate isGreaterThanOne = i -> i > 1;
 			IntPredicate isNotPrime = isGreaterThanOne.and(isIndivisible).negate();
 
 			System.out.println("The sum of non-prime odd numbers from 0 to 100 is: "
-					+ IntStream.rangeClosed(0, 100).filter(i -> i % 2 == 1).filter(isNotPrime)
-							.reduce(0, (l, r) -> l + r));
+					+ IntStream.rangeClosed(0, 100).filter(i -> i % 2 == 1).filter(isNotPrime).reduce(0, (l, r) -> l + r));
 		}
 		
 		{
+			// Part c) variation
 			// Print the sum of non-prime odd numbers from 0 to 100 - using an inner stream
 			System.out.println("The sum of non-prime odd numbers from 0 to 100 is: " +
 					IntStream.rangeClosed(1, 100).filter(i -> i % 2 == 1).

@@ -11,11 +11,13 @@ public class PredicateCompositionWithStreams {
 
 	public static void main(String... args) {
 
+		// Need only change the predicate definitions
 		Predicate<Double[]> isAllPassed = e -> Arrays.stream(e).noneMatch(g -> g < .60);
 		Predicate<Double[]> isBAverage = e -> Arrays.stream(e).reduce(0d, (l, r) -> l + r) / e.length >= .80;
 		Predicate<Double[]> isLastPerfect = e -> e[e.length - 1] == 1; 
 		Predicate<Double[]> isAnyMissed = e -> Arrays.stream(e).anyMatch(x -> x == 0);
 		
+		// The rest of the code is identical
         Predicate<Double[]> hasPassed = isAllPassed.and(isBAverage).or(isLastPerfect).and(isAnyMissed.negate());
 
         // True: Passed all

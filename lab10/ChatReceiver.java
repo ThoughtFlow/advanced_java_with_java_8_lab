@@ -44,13 +44,13 @@ public class ChatReceiver implements Closeable{
 		String peerLine;
 		String myLine = "";
 		
-		while ((peerLine = peerReader.readLine()) != null && !END_OF_CONVERSATION.equals(peerLine)) {
+		while ((peerLine = peerReader.readLine()) != null && !END_OF_CONVERSATION.equalsIgnoreCase(peerLine)) {
 			System.out.println("[" + peerName + "] " + peerLine);
 
 			System.out.print("[" + myUserName + "]: ");
 			sendMessage(myLine = consoleReader.readLine());
 			
-			if (END_OF_CONVERSATION.equals(myLine))
+			if (END_OF_CONVERSATION.equalsIgnoreCase(myLine))
 			{
 				break;
 			}
@@ -92,7 +92,7 @@ public class ChatReceiver implements Closeable{
 		peerWriter.flush();
 	}
 	
-	public static void main(String... args) throws IOException {
+	public static void main(String... args) {
 		
 		if (args.length == 1) {
 		   String userName = args[0];
@@ -101,6 +101,9 @@ public class ChatReceiver implements Closeable{
 
 		      receiver.establishConnection();
 		      receiver.chat();
+		   }
+		   catch (IOException exception) {
+			   exception.printStackTrace();
 		   }
 		}
 		else

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public class StreamGrep {
 
 	private static long grepDashCImperative(BufferedReader in, String upperCaseSearchWord) throws IOException {
@@ -28,7 +29,6 @@ public class StreamGrep {
 		return count;
 	}
 
-	@SuppressWarnings("unused")
 	private static long grepDashCWithReduce(BufferedReader in, String upperCaseSearchWord) {
 
 		// The long way
@@ -36,7 +36,6 @@ public class StreamGrep {
 				.reduce(0, (l, r) -> l + r);
 	}
 
-	@SuppressWarnings("unused")
 	private static long grepDashCWithCount(BufferedReader in, String upperCaseSearchWord) {
 
 		// Using the built-in function count
@@ -50,8 +49,7 @@ public class StreamGrep {
 				.collect(ArrayList<String>::new, ArrayList<String>::add, ArrayList<String>::addAll);
 	}
 
-	@SuppressWarnings("unused")
-	private static List<String> grepCollect2(BufferedReader in, String upperCaseSearchWord) {
+	private static List<String> grepCollectWithCollectors(BufferedReader in, String upperCaseSearchWord) {
 
 		// Accumulate the strings via collect
 		return in.lines().map(String::toUpperCase).filter(s -> s.contains(upperCaseSearchWord))
@@ -69,12 +67,12 @@ public class StreamGrep {
 		final String wordSearch = "JAVA";
 		final String url = "http://www.oracle.com/technetwork/java/index.html";
 		
-		try (BufferedReader bufferedReader = getReader(url)) {
-			System.out.println("Using grepDashCImperative - Found: " + grepDashCImperative(bufferedReader, wordSearch));
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try (BufferedReader bufferedReader = getReader(url)) {
+//			System.out.println("Using grepDashCImperative - Found: " + grepDashCImperative(bufferedReader, wordSearch));
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
 //		
 //		try (BufferedReader bufferedReader = getReader(url)) {
 //			System.out.println("Using grepDashCWithCount - Found: " + grepDashCWithCount(bufferedReader, wordSearch));
@@ -83,12 +81,12 @@ public class StreamGrep {
 //			e.printStackTrace();
 //		}
 		
-//		try (BufferedReader bufferedReader = getReader(url)) {
-//			System.out.println("Using grepDashCWithReduce - Found: " + grepDashCWithReduce(bufferedReader, wordSearch));
-//		}
-//		catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try (BufferedReader bufferedReader = getReader(url)) {
+			System.out.println("Using grepDashCWithReduce - Found: " + grepDashCWithReduce(bufferedReader, wordSearch));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		try (BufferedReader bufferedReader = getReader(url)) {
 			System.out.println("Using grepCollect - found :");

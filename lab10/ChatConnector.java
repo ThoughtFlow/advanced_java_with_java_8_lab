@@ -40,13 +40,13 @@ public class ChatConnector implements Closeable {
 		String myLine;
 
 		System.out.println("Connected with " + peerName + " who is typing...");
-		while ((peerLine = peerReader.readLine()) != null && !END_OF_CONVERSATION.equals(peerLine)) {
+		while ((peerLine = peerReader.readLine()) != null && !END_OF_CONVERSATION.equalsIgnoreCase(peerLine)) {
 			System.out.println("[" + peerName + "] " + peerLine);
 
 			System.out.print("[" + myUserName + "]: ");
 			sendMessage(myLine = consoleReader.readLine());
 
-			if (END_OF_CONVERSATION.equals(myLine)) {
+			if (END_OF_CONVERSATION.equalsIgnoreCase(myLine)) {
 				break;
 			}
 		}
@@ -91,7 +91,7 @@ public class ChatConnector implements Closeable {
 		peerWriter.flush();
 	}
 
-	public static void main(String... args) throws Exception {
+	public static void main(String... args) {
 
 		if (args.length == 3) {
 			String host = args[0];
@@ -99,6 +99,9 @@ public class ChatConnector implements Closeable {
 			String userName = args[2];
 			try (ChatConnector connector = new ChatConnector(host, port, userName)) {
 				connector.chat();
+			}
+			catch (IOException exception) {
+				exception.printStackTrace();
 			}
 		} else {
 			System.err.println("Usage: Connector host port userName");
