@@ -7,15 +7,20 @@ import java.util.concurrent.Future;
 
 public class ExecutorServiceExample {
 
+	public static void log(String message) {
+		System.out.println(System.currentTimeMillis() + ": [" + Thread.currentThread().getName() + "] " + message);
+	}
+	
 	public static void main(String[] args) throws InterruptedException, ExecutionException
 	{
 		ExecutorService pool = Executors.newCachedThreadPool();
 		
 		Handler callable = new Handler();
+		log("Submitting handler...");
 		Future<Long> future = pool.submit(callable);
+		log("Submitting handler...Done");
 		
-		System.out.println(future.get());
-		System.out.println("Initiated shutdown");
+		log("Obtained value: " + future.get());
 		pool.shutdown();
 	}
 	
@@ -23,7 +28,9 @@ public class ExecutorServiceExample {
 
 		@Override
 		public Long call() throws Exception {
+			log("Handler is executing...");
 			Thread.sleep(10000);
+			log("Handler is executing...Done");
 			return System.currentTimeMillis();
 		}
 	}
