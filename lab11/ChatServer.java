@@ -52,9 +52,11 @@ public class ChatServer implements Runnable, Closeable {
 
 			logger.info("Chat server is ready on port " + daemonAddress);
 			selector = Selector.open();
+			
 			serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
 			while (selector.isOpen()) {
+				// This will block until a client connects
 				selector.select();
 				if (!selector.isOpen()) {
 					break;

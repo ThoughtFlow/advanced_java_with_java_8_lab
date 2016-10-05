@@ -116,8 +116,8 @@ public class Promises {
 			}
 			
 			{
-				printTestHeader("Task 1 and 2 run on the main thread sequentially, 3 runs in parallel on multiple threads, and 4 runs sequentially on any previous task thread - " +
-						        "with manual exception handling");
+				printTestHeader("Task 1 and 2 run on the main thread sequentially, 3 runs in parallel on multiple threads, " +
+								"and 4 runs sequentially on any previous task thread - with manual exception handling");
 				CompletableFuture<Integer> task1a = new CompletableFuture<>();
 				CompletableFuture<Integer> task1b = new CompletableFuture<>();
 				CompletableFuture<Integer> task1c = new CompletableFuture<>();
@@ -149,8 +149,8 @@ public class Promises {
 			}
 			
 			{
-				printTestHeader("Task 1 & 3 run in parallel on multiple threads, 2 and 4 run sequentially on any previous task thread - " +
-			                    "using whenComplete");
+				printTestHeader("Task 1 and 2 run on the main thread sequentially, 3 runs in parallel on multiple threads, " +
+						        "and 4 runs sequentially on any previous task thread - using when complete");
 				CompletableFuture<Integer> task1a = new CompletableFuture<>();
 				CompletableFuture<Integer> task1b = new CompletableFuture<>();
 				CompletableFuture<Integer> task1c = new CompletableFuture<>();
