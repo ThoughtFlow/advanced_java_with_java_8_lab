@@ -19,13 +19,20 @@ public class SpliteratorSpliter {
 	
 	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long dataSize, int maxSpliterators) {
 
+		// Try to create no more than maxSpliterators 
 		if (handles.size() < maxSpliterators) {
 			Spliterator<T> peerSpliterator = spliterator.trySplit();
 			
+			// If the split worked
 			if (peerSpliterator != null) {
 				handles.add(peerSpliterator);
 				
+				// If possible, each spliterator's size should be no smaller than dataSize.
+				// Note that this method may not know what the real value is. If it doesn't know, it will estimate it and may be inaccurate. 
+				// Inaccurate estimates lead to unbalanced spliterators.
 				if (peerSpliterator.getExactSizeIfKnown() > dataSize) {
+					
+					// Further split is possible. Now recursively call this method to split each leg. 
 					splitInX(peerSpliterator, handles, dataSize, maxSpliterators);
 					splitInX(spliterator, handles, dataSize, maxSpliterators);
 				}
@@ -79,55 +86,43 @@ public class SpliteratorSpliter {
 		return lastComma > 0 ? characteristics.substring(0, lastComma) : characteristics.toString();
 	}
 	
+	public static <T extends Collection<String>> T populate(T collection, int size) {
+		for (int index = 0; index < size; ++index) {
+			collection.add(Integer.toString(index));
+		}
+		
+		return collection;
+	}
+	
 	public static void main(String... args) throws Exception {
 
 		{
 			// ArrayList
-			List<String> list = new ArrayList<>();
-			for (int index = 0; index < 4096; ++index) {
-				list.add(Integer.toString(index));
-			}
-			
+		    List<String> list = populate(new ArrayList<String>(), 4096);
 			printSplitResult(doSplit(list), "ArrayList");
 		}
 
 		{
 			// A small LinkedList
-			List<String> list = new LinkedList<>();
-			for (int index = 0; index < 4096; ++index) {
-				list.add(Integer.toString(index));
-			}
-			
+		    List<String> list = populate(new LinkedList<String>(), 4096);
 			printSplitResult(doSplit(list), "Small LinkedList");
 		}
 		
 		{
 			// A big LinkedList 
-			List<String> list = new LinkedList<>();
-			for (int index = 0; index < 1000000; ++index) {
-				list.add(Integer.toString(index));
-			}
-			
+		    List<String> list = populate(new LinkedList<String>(), 1000000);
 			printSplitResult(doSplit(list), "Big LinkedList");
 		}
 		
 		{
 			// A HashSet
-			Set<String> set = new HashSet<>();
-			for (int index = 0; index < 4096; ++index) {
-				set.add(Integer.toString(index));
-			}
-			
+			Set<String> set = populate(new HashSet<String>(), 4096);
 			printSplitResult(doSplit(set), "HashSet");
 		}
 		
 		{
 			// A LinkedHashSet
-			Set<String> set = new LinkedHashSet<>();
-			for (int index = 0; index < 4096; ++index) {
-				set.add(Integer.toString(index));
-			}
-			
+			Set<String> set = populate(new LinkedHashSet<String>(), 4096);
 			printSplitResult(doSplit(set), "LinkedHashSet");
 		}
 
