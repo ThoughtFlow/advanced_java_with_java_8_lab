@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class SpliteratorSpliter {
 
@@ -44,6 +45,15 @@ public class SpliteratorSpliter {
 		
 		List<Spliterator<T>> spliterators = new LinkedList<>();
 		Spliterator<T> firstSpliterator = collection.spliterator();
+		spliterators.add(firstSpliterator);
+		splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / MAX_SPLITERATORS, MAX_SPLITERATORS);
+		
+		return spliterators;
+	}
+	
+	private static <T> List<Spliterator<T>> doSplit(Spliterator<T> firstSpliterator) {
+		
+		List<Spliterator<T>> spliterators = new LinkedList<>();
 		spliterators.add(firstSpliterator);
 		splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / MAX_SPLITERATORS, MAX_SPLITERATORS);
 		
@@ -126,6 +136,12 @@ public class SpliteratorSpliter {
 			printSplitResult(doSplit(set), "LinkedHashSet");
 		}
 
+		{
+			// An inifinite source
+		    Spliterator<Integer> s = Stream.iterate(0, i -> ++i).spliterator();
+		    printSplitResult(doSplit(s), "Infinite");
+		}
+				
 		{
 			// A BufferedReader
 			URL url = new URL("http://www.oracle.com");
