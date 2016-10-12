@@ -53,8 +53,11 @@ public class SpliteratorFinder {
 		}
 
 		// Spawn the search in parallel
-		for (Callable<FoundHolder<String>> next : callables) {
-			futures.add(executor.submit(next));
+		try {
+			futures = executor.invokeAll(callables);
+		}
+		catch (InterruptedException e) {
+			// Would normally deal with this type of error
 		}
 
 		Map<String, List<String>> mergedList = new LinkedHashMap<>();
