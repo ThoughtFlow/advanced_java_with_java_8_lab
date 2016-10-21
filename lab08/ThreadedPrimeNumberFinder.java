@@ -57,7 +57,7 @@ public class ThreadedPrimeNumberFinder {
 		int totalPrimesFound = 0;
 
 		for (int index = 0; index < K_SLICES; ++index) {
-			primeFinders.add(new PrimeFinder(index * 1000, index * K + K - 1));
+			primeFinders.add(new PrimeFinder(index * K, index * K + K - 1));
 		}
 		
 		List<Future<Integer>> futures = pool.invokeAll(primeFinders);

@@ -9,7 +9,6 @@ public class Movie{
 	private final Integer releaseYear;
 	
 	public Movie(Set<Category> categories, String name, Integer releaseYear) {
-		super();
 		this.categories = categories;
 		this.name = name;
 		this.releaseYear = releaseYear;

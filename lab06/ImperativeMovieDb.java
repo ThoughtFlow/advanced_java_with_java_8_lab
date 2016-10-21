@@ -38,7 +38,7 @@ public class ImperativeMovieDb implements MovieDb {
 	}
 
 	@Override
-	public Movie find(String name) {
+	public Movie findByName(String name) {
 		Movie foundMovie = null;
 		Iterator<List<Movie>> iterator = database.values().iterator();
 		while (iterator.hasNext() && foundMovie == null) {
@@ -56,7 +56,7 @@ public class ImperativeMovieDb implements MovieDb {
 	}
 	
 	@Override
-	public List<String> getByCategory(Category category) {
+	public List<String> findByCategory(Category category) {
 		List<Movie> movies = database.containsKey(category) ? database.get(category) : Collections.emptyList();
 		List<String> movieTitles = new ArrayList<>();
 		
@@ -72,7 +72,7 @@ public class ImperativeMovieDb implements MovieDb {
 	public boolean delete(String name) {
 		Movie foundMovie = null;
 		Iterator<List<Movie>> iterator = database.values().iterator();
-		while (iterator.hasNext() && foundMovie == null) {
+		while (iterator.hasNext()) {
 			List<Movie> nextList = iterator.next();
 
 			for (Movie nextMovie : nextList) {

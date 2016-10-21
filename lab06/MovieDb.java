@@ -29,15 +29,15 @@ public interface MovieDb {
 	 * @param name The name of the movie to search.
 	 * @return The found movie or null if not found.
 	 */
-	Movie find(String name);
+	Movie findByName(String name);
 
 	/**
-	 * Returns the list of movies for the given category.
+	 * Searches by category and returns the list of movies for the given category.
 	 * 
 	 * @param category The category name to search.
 	 * @return The list of movies matching the category or an empty list.
 	 */
-	List<String> getByCategory(Category category);
+	List<String> findByCategory(Category category);
 
 	/**
 	 * Deletes the movie with the given name. 

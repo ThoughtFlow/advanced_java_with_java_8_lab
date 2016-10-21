@@ -24,11 +24,12 @@ public class FunctionalMovieDb implements MovieDb {
 		// Can use this method...
 //		categories.forEach(category -> database.computeIfAbsent(category, k -> new LinkedList<Movie>()));
 //		categories.forEach(category -> database.compute(category, (k, v) -> {v.add(movieToAdd); return v;}));
-		
+
 		// ...Or this method
-		List<Movie> newMovieList = new LinkedList<Movie>();
-		newMovieList.add(movieToAdd);
-		categories.forEach(category -> database.merge(category, newMovieList, (t1, t2) -> {t1.add(movieToAdd); return t1;}));
+		categories.forEach(category -> {
+			database.computeIfAbsent(category, k -> new LinkedList<Movie>());
+			database.compute(category, (k, v) -> {v.add(movieToAdd); return v;});
+		});
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class FunctionalMovieDb implements MovieDb {
 	}
 
 	@Override
-	public Movie find(String name) {
+	public Movie findByName(String name) {
 		// Can't use a simple Movie class because it will be immutable within lambda. 
 		// When can always use an AtomicReference to set the value.
 		AtomicReference<Movie> foundMovie = new AtomicReference<>();
@@ -53,7 +54,7 @@ public class FunctionalMovieDb implements MovieDb {
 	
 	
 	@Override
-	public List<String> getByCategory(Category category) {
+	public List<String> findByCategory(Category category) {
 		// Refactored functionally
 		List<Movie> movies = database.getOrDefault(category, Collections.emptyList());
 
@@ -74,6 +75,6 @@ public class FunctionalMovieDb implements MovieDb {
 		);
 
 		// Can't support this with lists
-		return find(name) == null;
+		return findByName(name) == null;
 	}
 }

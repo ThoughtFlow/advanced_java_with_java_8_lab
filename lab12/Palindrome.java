@@ -63,7 +63,7 @@ public class Palindrome
     {
         return list.stream().
             map(s -> {s = s.replace(" ", ""); return s;}).
-            map(s -> {s = s.toLowerCase(); return s;}).
+            map(s -> s.toLowerCase()).
             filter(s -> s.length() > 2).
             filter(s -> {
                 int halfWay = s.length() / 2 - 1;
