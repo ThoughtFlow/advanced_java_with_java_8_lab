@@ -5,7 +5,7 @@ import java.util.EnumSet;
 public class TestMovieDb {
 
 	public static void runTest(MovieDb movies) {
-		System.out.println("==================");
+		System.out.println("===================");
 		System.out.println("Testing: " + movies.getClass());
 		movies.add(Category.COMEDY, "The Simpsons", 2007);
 		movies.add(Category.DRAMA, "Goodfellas", 1990);

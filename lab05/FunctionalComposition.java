@@ -20,6 +20,5 @@ public class FunctionalComposition
         
         full = negateIt.compose(cubeIt.compose(squareIt.compose(doubleIt)));
         System.out.println(full.apply(3));
-
     }
 }
