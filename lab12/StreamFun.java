@@ -51,5 +51,15 @@ public class StreamFun {
 					filter(i -> i == 1 || !IntStream.rangeClosed(2, (int) Math.sqrt(i)).noneMatch(innerI -> i % innerI == 0)).
 					reduce(0, (l, r) -> l + r));
 		}
+		
+		{
+			// Part d)
+			// Find the smallest int whose factorial is >= 1,000,000
+			int smallestInt = IntStream.rangeClosed(1, 100).
+										filter(i -> IntStream.rangeClosed(1, i).reduce(1, (l, r) -> l * r) >= 1000000).
+										findAny().
+										orElse(0);
+			System.out.println("Smallest int whose factorial is >= 1,000,000 is: " + smallestInt);
+		}
 	}
 }
