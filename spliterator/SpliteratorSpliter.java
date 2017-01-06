@@ -24,7 +24,7 @@ public class SpliteratorSpliter {
 		if (handles.size() < maxSpliterators) {
 			Spliterator<T> peerSpliterator = spliterator.trySplit();
 			
-			// If the split worked
+			// Did the split work?
 			if (peerSpliterator != null) {
 				handles.add(peerSpliterator);
 				
@@ -81,7 +81,7 @@ public class SpliteratorSpliter {
 		System.out.println("Total exact size: " + totalExactSize);
 	}
 
-	public static String getCharacteristics(Spliterator<?> spliterator) {
+	private static String getCharacteristics(Spliterator<?> spliterator) {
 		StringBuilder characteristics = new StringBuilder();
 		characteristics.append(spliterator.hasCharacteristics(Spliterator.ORDERED) ? "ORDERED, " : "");
 		characteristics.append(spliterator.hasCharacteristics(Spliterator.DISTINCT) ? "DISTINCT, " : "");
@@ -96,7 +96,7 @@ public class SpliteratorSpliter {
 		return lastComma > 0 ? characteristics.substring(0, lastComma) : characteristics.toString();
 	}
 	
-	public static <T extends Collection<String>> T populate(T collection, int size) {
+	private static <T extends Collection<String>> T populate(T collection, int size) {
 		for (int index = 0; index < size; ++index) {
 			collection.add(Integer.toString(index));
 		}
@@ -137,7 +137,7 @@ public class SpliteratorSpliter {
 		}
 
 		{
-			// An inifinite source
+			// An infinite source using streams
 		    Spliterator<Integer> s = Stream.iterate(0, i -> ++i).spliterator();
 		    printSplitResult(doSplit(s), "Infinite");
 		}
