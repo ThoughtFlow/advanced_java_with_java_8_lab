@@ -44,7 +44,7 @@ public class Promises {
 	
 	public static void main(String... args) {
 
-		try {
+	try {
 			{
 				printTestHeader("All tasks run under same thread sequentially using the common fork-join thread pool");
 				CompletableFuture<Integer> task1 = CompletableFuture.supplyAsync(() -> doTask(true));

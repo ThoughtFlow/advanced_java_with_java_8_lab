@@ -32,6 +32,7 @@ public class ChatServer implements Runnable, Closeable {
 		this.daemonAddress = daemonAddress;
 	}
 
+	@Override
 	public void close() {
 		if (selector != null && selector.isOpen()) {
 			

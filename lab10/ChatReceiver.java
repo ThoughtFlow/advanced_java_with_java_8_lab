@@ -55,6 +55,8 @@ public class ChatReceiver implements Closeable{
 				break;
 			}
 		}
+		
+		System.out.println("End of chat");
 	}
 
 	@Override

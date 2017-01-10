@@ -43,9 +43,10 @@ public class FunctionalMovieDb implements MovieDb {
 	@Override
 	public Movie findByName(String name) {
 		// Can't use a simple Movie class because it will be immutable within lambda. 
-		// When can always use an AtomicReference to set the value.
+		// An AtomicReference is used to store the found movie. Can also just create your own holder class.
 		AtomicReference<Movie> foundMovie = new AtomicReference<>();
 
+		// Iterate over all the movies in the Map and store it foundMovie if found.
 		Consumer<Movie> consumer = nextTitle -> {if (nextTitle.getName().equals(name)) foundMovie.set(nextTitle);};
 		database.values().forEach(nextList -> nextList.forEach(consumer));
 
