@@ -12,8 +12,8 @@ public class ConsumerComposition {
 		
 		Consumer<String> superPrint = printUpperCase.andThen(printToErr);
 		
-		superPrint.accept("This is a normal line");
-		superPrint.accept("Exception occurred");
+		superPrint.accept("This is a normal line and will only be printed to stdout");
+		superPrint.accept("Exception occurred - line will be printed to stdout and stderr");
 		
 	}
 }
