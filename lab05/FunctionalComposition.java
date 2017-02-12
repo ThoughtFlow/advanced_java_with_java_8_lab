@@ -12,13 +12,16 @@ public class FunctionalComposition
         Function<Integer, Integer> cubeIt = i -> i * i * i;
         Function<Integer, Integer> negateIt = i -> i * -1;
 
+        // Using andThen()
         Function<Integer, Integer> full = doubleIt.andThen(squareIt).andThen(cubeIt).andThen(negateIt);
         System.out.println(full.apply(3));
-        
-        full = negateIt.compose(doubleIt.andThen(squareIt).andThen(cubeIt));
+
+        // Using compose()
+        full = negateIt.compose(cubeIt.compose(squareIt.compose(doubleIt)));
         System.out.println(full.apply(3));
         
-        full = negateIt.compose(cubeIt.compose(squareIt.compose(doubleIt)));
+        // Using both andThen() and compose()
+        full = negateIt.compose(doubleIt.andThen(squareIt).andThen(cubeIt));
         System.out.println(full.apply(3));
     }
 }

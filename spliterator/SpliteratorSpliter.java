@@ -18,7 +18,7 @@ public class SpliteratorSpliter {
 
 	private static final int MAX_SPLITERATORS = 8;
 	
-	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long dataSize, int maxSpliterators) {
+	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long targetSpliteratorSize, int maxSpliterators) {
 
 		// Try to create no more than maxSpliterators 
 		if (handles.size() < maxSpliterators) {
@@ -28,14 +28,14 @@ public class SpliteratorSpliter {
 			if (peerSpliterator != null) {
 				handles.add(peerSpliterator);
 				
-				// If possible, each spliterator's size should be no smaller than dataSize.
+				// If possible, each spliterator's size should be no smaller than targetSpliteratorSize.
 				// Note that this method may not know what the real value is. If it doesn't know, it will estimate it and may be inaccurate. 
 				// Inaccurate estimates lead to unbalanced spliterators.
-				if (peerSpliterator.getExactSizeIfKnown() > dataSize) {
+				if (peerSpliterator.getExactSizeIfKnown() > targetSpliteratorSize) {
 					
 					// Further split is possible. Now recursively call this method to split each leg. 
-					splitInX(peerSpliterator, handles, dataSize, maxSpliterators);
-					splitInX(spliterator, handles, dataSize, maxSpliterators);
+					splitInX(peerSpliterator, handles, targetSpliteratorSize, maxSpliterators);
+					splitInX(spliterator, handles, targetSpliteratorSize, maxSpliterators);
 				}
 			}
 		}

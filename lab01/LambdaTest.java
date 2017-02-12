@@ -4,7 +4,12 @@ public class LambdaTest {
 
 	public static void main(String... args) {
 
+		// As a lambda block
 		Interface1 i1 = x -> {System.out.println(x * x);};
+		i1.printSquareOfA(3);
+		
+		// Could also be a lambda expression
+		i1 = x -> System.out.println(x * x);
 		i1.printSquareOfA(3);
 
 		Interface2 i2 = x -> x * x;
