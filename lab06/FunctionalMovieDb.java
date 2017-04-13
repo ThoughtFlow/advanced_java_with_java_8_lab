@@ -69,13 +69,13 @@ public class FunctionalMovieDb implements MovieDb {
 	@Override
 	public boolean delete(String name) {
 
+		final boolean existedBeforeDelete = findByName(name) != null;
 		Predicate<Movie> p = movie -> movie.getName().equals(name);
+		
 		// Refactored functionally
-		database.values().forEach(list -> 
-			list.removeIf(p)
-		);
+		database.values().forEach(list -> list.removeIf(p));
 
-		// Can't support this with lists
-		return findByName(name) == null;
+		// Can't support this with lists so we need to save the flag to determine whether or not it existed before delete
+		return existedBeforeDelete;
 	}
 }

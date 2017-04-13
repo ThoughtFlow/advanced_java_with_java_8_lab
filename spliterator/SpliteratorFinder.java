@@ -25,6 +25,7 @@ public class SpliteratorFinder {
 
 	public Map<String, List<String>> find(String searchString, Spliterator<String> firstSpliterator) {
 
+		final String lowerCaseSearchString = searchString.toLowerCase();
 		FoundHolder.resetCount();
 		List<Future<FoundHolder<String>>> futures = new LinkedList<>();
 		List<Callable<FoundHolder<String>>> callables = new LinkedList<>();
@@ -42,7 +43,7 @@ public class SpliteratorFinder {
 		for (Spliterator<String> nextSpliterator : spliterators) {
 			FoundHolder<String> holder = new FoundHolder<String>();
 			Consumer<String> finder = s -> {
-				if (s.toLowerCase().contains(searchString.toLowerCase()))
+				if (s.toLowerCase().contains(lowerCaseSearchString))
 					holder.add(s);
 			};
 
@@ -138,8 +139,8 @@ public class SpliteratorFinder {
 			SpliteratorFinder finder = new SpliteratorFinder();
 			URL url = new URL("https://www.oracle.com");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
-			Spliterator<String> spliterator = reader.lines().spliterator();
-			Map<String, List<String>> result = finder.find(stringToFind, spliterator);
+			Spliterator<String> spliterators = reader.lines().spliterator();
+			Map<String, List<String>> result = finder.find(stringToFind, spliterators);
 			
 			result.entrySet().forEach(e -> {
 				System.out.println("Thread " + e.getKey());

@@ -32,8 +32,7 @@ public class StreamGrep {
 	private static long grepDashCWithReduce(BufferedReader in, String upperCaseSearchWord) {
 
 		// The long way
-		return in.lines().map(String::toUpperCase).filter(s -> s.contains(upperCaseSearchWord)).mapToLong(count -> 1)
-				.reduce(0, (l, r) -> l + r);
+		return in.lines().map(String::toUpperCase).filter(s -> s.contains(upperCaseSearchWord)).mapToLong(count -> 1).reduce(0, (l, r) -> l + r);
 	}
 
 	private static long grepDashCWithCount(BufferedReader in, String upperCaseSearchWord) {
@@ -52,8 +51,7 @@ public class StreamGrep {
 	private static List<String> grepCollectWithCollectors(BufferedReader in, String upperCaseSearchWord) {
 
 		// Accumulate the strings via collect
-		return in.lines().map(String::toUpperCase).filter(s -> s.contains(upperCaseSearchWord))
-				.collect(Collectors.toList());
+		return in.lines().map(String::toUpperCase).filter(s -> s.contains(upperCaseSearchWord)).collect(Collectors.toList());
 	}
 	
 	private static BufferedReader getReader(String stringedUrl) throws IOException {

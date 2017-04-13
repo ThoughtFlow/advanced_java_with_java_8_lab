@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -44,11 +45,28 @@ public class Palindrome
         return palindromes;
     }
 
+    public static List<String> findPalindrome(List<String> list)
+    {
+        return list.stream().
+            map(s -> {s = s.replace(" ", ""); return s;}).
+            map(s -> {s = s.replace(",", ""); return s;}).
+            map(s -> {s = s.replace("'", ""); return s;}).
+            map(s -> s.toLowerCase()).
+            filter(s -> s.length() > 2).
+            filter(s -> {
+                int halfWay = s.length() / 2 - 1;
+                return IntStream.rangeClosed(0, halfWay).allMatch(i -> s.charAt(i) == s.charAt(s.length() - i - 1));
+            }).
+            collect(Collectors.toList());
+    }
+    
     public static List<String> findPalindromeKeepOriginal(List<String> list)
     {
         return list.stream().
             map(Holder::new).
-            map(h -> {h.strippedWord = h.original.replace(" ", ""); return h;}).
+            map(h -> {h.strippedWord = h.strippedWord.replace(" ", ""); return h;}).
+            map(h -> {h.strippedWord = h.strippedWord.replace(",", ""); return h;}).
+            map(h -> {h.strippedWord = h.strippedWord.replace("'", ""); return h;}).
             map(h -> {h.strippedWord = h.strippedWord.toLowerCase(); return h;}).
             filter(h -> h.strippedWord.length() > 2).
             filter(h -> {
@@ -59,43 +77,53 @@ public class Palindrome
             collect(Collectors.toList());
     }
     
-    public static List<String> findPalindrome(List<String> list)
+    public static List<String> findPalindromeKeepOriginalConcise(List<String> list)
     {
+    	BiFunction<Holder, String, Holder> replacer = (h, s) -> {h.strippedWord = h.strippedWord.replace(s, ""); return h;};
+    	
         return list.stream().
-            map(s -> {s = s.replace(" ", ""); return s;}).
-            map(s -> s.toLowerCase()).
-            filter(s -> s.length() > 2).
-            filter(s -> {
-                int halfWay = s.length() / 2 - 1;
-                return IntStream.rangeClosed(0, halfWay).allMatch(i -> s.charAt(i) == s.charAt(s.length() - i - 1));
+            map(Holder::new).
+            map(h -> replacer.apply(h, " ")).
+            map(h -> replacer.apply(h, ",")).
+            map(h -> replacer.apply(h, "'")).
+            map(h -> {h.strippedWord = h.strippedWord.toLowerCase(); return h;}).
+            filter(h -> h.strippedWord.length() > 2).
+            filter(h -> {
+                int halfWay = h.strippedWord.length() / 2 - 1;
+                return IntStream.rangeClosed(0, halfWay).allMatch(i -> h.strippedWord.charAt(i) == h.strippedWord.charAt(h.strippedWord.length() - i - 1));
             }).
+            map(h -> h.original).
             collect(Collectors.toList());
     }
+    
+
 
     public static void main(String... args) throws IOException
     {
         List<String> palindromes = Arrays.asList(
         "A man a plan a cat a ham a yak a yam a hat a canal Panama",
         "A Toyota Race fast safe car A Toyota",
-        "As I pee sir I see Pisa",
+        "As I pee sir, I see Pisa",
         "Aibohphobia",
         "ABBA",
         "A Toyota's a Toyota",
         "This is not a palindrome");
         System.out.println("These are palindromes: " );
 //        findPalindrome(palindromes).forEach(System.out::println);
-        findPalindromeKeepOriginal(palindromes).forEach(System.out::println);
+//        findPalindromeKeepOriginal(palindromes).forEach(System.out::println);
+        findPalindromeKeepOriginalConcise(palindromes).forEach(System.out::println);
 //        findPalindromeImperative(palindromes).forEach(System.out::println);
     }
 
     private static class Holder
     {
-        public String original;
+        public final String original;
         public String strippedWord;
 
         public Holder(String original)
         {
             this.original = original;
+            this.strippedWord = original;
         }
     }
 }

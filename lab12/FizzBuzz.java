@@ -19,7 +19,7 @@ public class FizzBuzz
 
     private static class Holder
     {
-        public int number;
+        public final int number;
         public String fizzBuzz = "";
 
         public Holder(int i)
