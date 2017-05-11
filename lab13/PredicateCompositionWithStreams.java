@@ -1,4 +1,4 @@
-package lab12;
+package lab13;
 
 import java.util.Arrays;
 import java.util.function.Predicate;

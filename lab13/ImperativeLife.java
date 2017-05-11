@@ -1,4 +1,4 @@
-package lab12;
+package lab13;
 
 public class ImperativeLife
 {
