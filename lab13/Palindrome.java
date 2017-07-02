@@ -95,8 +95,6 @@ public class Palindrome
             map(h -> h.original).
             collect(Collectors.toList());
     }
-    
-
 
     public static void main(String... args) throws IOException
     {
@@ -109,10 +107,12 @@ public class Palindrome
         "A Toyota's a Toyota",
         "This is not a palindrome");
         System.out.println("These are palindromes: " );
-//        findPalindrome(palindromes).forEach(System.out::println);
-//        findPalindromeKeepOriginal(palindromes).forEach(System.out::println);
-        findPalindromeKeepOriginalConcise(palindromes).forEach(System.out::println);
-//        findPalindromeImperative(palindromes).forEach(System.out::println);
+        findPalindromeKeepOriginal(palindromes).forEach(System.out::println);
+        
+        // Variations
+        //findPalindrome(palindromes).forEach(System.out::println);
+        //findPalindromeKeepOriginalConcise(palindromes).forEach(System.out::println);
+        //findPalindromeImperative(palindromes).forEach(System.out::println);
     }
 
     private static class Holder

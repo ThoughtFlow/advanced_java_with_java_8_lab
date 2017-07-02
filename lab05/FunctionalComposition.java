@@ -17,6 +17,10 @@ public class FunctionalComposition
         System.out.println(full.apply(3));
 
         // Using compose()
+        full = negateIt.compose(cubeIt).compose(squareIt).compose(doubleIt);
+        System.out.println(full.apply(3));
+        
+        // Using nested compose()
         full = negateIt.compose(cubeIt.compose(squareIt.compose(doubleIt)));
         System.out.println(full.apply(3));
         

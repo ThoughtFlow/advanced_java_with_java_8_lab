@@ -50,7 +50,8 @@ public class SpliteratorPrimeNumberFinder {
 			
 			// Make sure the spliterator is not null
 			if (spliterator != null) {
-			   spliterator.forEachRemaining(nextInt -> counter.updateAndGet(containedInt -> isPrime(nextInt) ? ++containedInt : containedInt));
+				System.out.println(Thread.currentThread().getName() + ": size: " + spliterator.getExactSizeIfKnown());
+			    spliterator.forEachRemaining(nextInt -> counter.updateAndGet(containedInt -> isPrime(nextInt) ? ++containedInt : containedInt));
 			}
 
 			return counter.get();
@@ -59,7 +60,7 @@ public class SpliteratorPrimeNumberFinder {
 	
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		// Populate the list of integers
-		List<Integer> integerList = new ArrayList<>(LIST_SIZE);
+		List<Integer> integerList = new ArrayList<>();
 		for (int index = 0; index < LIST_SIZE; ++index) {
 			integerList.add(index);
 		}
