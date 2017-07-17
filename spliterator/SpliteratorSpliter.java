@@ -18,7 +18,7 @@ public class SpliteratorSpliter {
 
 	private static final int MAX_SPLITERATORS = 8;
 	
-	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long targetSpliteratorSize, int maxSpliterators) {
+	private static <T> void split(Spliterator<T> spliterator, List<Spliterator<T>> handles, long targetSpliteratorSize, int maxSpliterators) {
 
 		// Try to create no more than maxSpliterators 
 		if (handles.size() < maxSpliterators) {
@@ -34,19 +34,19 @@ public class SpliteratorSpliter {
 				if (peerSpliterator.getExactSizeIfKnown() > targetSpliteratorSize) {
 					
 					// Further split is possible. Now recursively call this method to split each leg. 
-					splitInX(peerSpliterator, handles, targetSpliteratorSize, maxSpliterators);
-					splitInX(spliterator, handles, targetSpliteratorSize, maxSpliterators);
+					split(peerSpliterator, handles, targetSpliteratorSize, maxSpliterators);
+					split(spliterator, handles, targetSpliteratorSize, maxSpliterators);
 				}
 			}
 		}
 	}
 	
-	private static <T> List<Spliterator<T>> doSplit(Collection<T> collection) {
+	private static <T> List<Spliterator<T>> getSpliteratorsFrom(Collection<T> collection) {
 		
 		List<Spliterator<T>> spliterators = new LinkedList<>();
 		Spliterator<T> firstSpliterator = collection.spliterator();
 		spliterators.add(firstSpliterator);
-		splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / MAX_SPLITERATORS, MAX_SPLITERATORS);
+		split(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / MAX_SPLITERATORS, MAX_SPLITERATORS);
 		
 		return spliterators;
 	}
@@ -55,7 +55,7 @@ public class SpliteratorSpliter {
 		
 		List<Spliterator<T>> spliterators = new LinkedList<>();
 		spliterators.add(firstSpliterator);
-		splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / MAX_SPLITERATORS, MAX_SPLITERATORS);
+		split(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / MAX_SPLITERATORS, MAX_SPLITERATORS);
 		
 		return spliterators;
 	}
@@ -109,31 +109,31 @@ public class SpliteratorSpliter {
 		{
 			// ArrayList
 		    List<String> list = populate(new ArrayList<String>(), 4096);
-			printSplitResult(doSplit(list), "ArrayList");
+			printSplitResult(getSpliteratorsFrom(list), "ArrayList");
 		}
 
 		{
 			// A small LinkedList
 		    List<String> list = populate(new LinkedList<String>(), 4096);
-			printSplitResult(doSplit(list), "Small LinkedList");
+			printSplitResult(getSpliteratorsFrom(list), "Small LinkedList");
 		}
 		
 		{
 			// A big LinkedList 
 		    List<String> list = populate(new LinkedList<String>(), 1000000);
-			printSplitResult(doSplit(list), "Big LinkedList");
+			printSplitResult(getSpliteratorsFrom(list), "Big LinkedList");
 		}
 		
 		{
 			// A HashSet
 			Set<String> set = populate(new HashSet<String>(), 4096);
-			printSplitResult(doSplit(set), "HashSet");
+			printSplitResult(getSpliteratorsFrom(set), "HashSet");
 		}
 		
 		{
 			// A LinkedHashSet
 			Set<String> set = populate(new LinkedHashSet<String>(), 4096);
-			printSplitResult(doSplit(set), "LinkedHashSet");
+			printSplitResult(getSpliteratorsFrom(set), "LinkedHashSet");
 		}
 
 		{
@@ -150,7 +150,7 @@ public class SpliteratorSpliter {
 		
 			List<Spliterator<String>> spliterators = new LinkedList<>();
 			spliterators.add(firstSpliterator);
-			splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / 8, 8);
+			split(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / 8, 8);
 			printSplitResult(spliterators, "BufferedReader");
 		}
 	}

@@ -15,27 +15,6 @@ public class SpliteratorPrimeNumberFinder {
 
 	private static final int LIST_SIZE = 1000000;
 
-	private static boolean isPrime(int primeCandidate) throws IllegalArgumentException {
-		
-		if (primeCandidate < 0) {
-			throw new IllegalArgumentException("PrimeCandidate must be a positive number - received: " + primeCandidate);
-		}
-		
-		boolean isPrime = primeCandidate == 2;
-
-		if (primeCandidate > 2) {
-			isPrime = true;
-			for (int testValue = 2; testValue <= Math.sqrt(primeCandidate); ++testValue) {
-				if (primeCandidate % testValue == 0) {
-					isPrime = false;
-					break;
-				}
-			}
-		} 
-
-		return isPrime;
-	}
-
 	private static class PrimeFinder implements Callable<Integer> {
 
 		private final Spliterator<Integer> spliterator;
@@ -43,7 +22,28 @@ public class SpliteratorPrimeNumberFinder {
 		public PrimeFinder(Spliterator<Integer> spliterator) {
 			this.spliterator = spliterator;
 		}
+		
+		private static boolean isPrime(int primeCandidate) throws IllegalArgumentException {
+			
+			if (primeCandidate < 0) {
+				throw new IllegalArgumentException("PrimeCandidate must be a positive number - received: " + primeCandidate);
+			}
+			
+			boolean isPrime = primeCandidate == 2;
 
+			if (primeCandidate > 2) {
+				isPrime = true;
+				for (int testValue = 2; testValue <= Math.sqrt(primeCandidate); ++testValue) {
+					if (primeCandidate % testValue == 0) {
+						isPrime = false;
+						break;
+					}
+				}
+			} 
+
+			return isPrime;
+		}
+		
 		@Override
 		public Integer call() {
 			AtomicInteger counter = new AtomicInteger(0);
@@ -58,7 +58,7 @@ public class SpliteratorPrimeNumberFinder {
 		}
 	}
 	
-	public static void main(String[] args) throws InterruptedException, ExecutionException {
+	private static List<PrimeFinder> getSpliterators() {
 		// Populate the list of integers
 		List<Integer> integerList = new ArrayList<>();
 		for (int index = 0; index < LIST_SIZE; ++index) {
@@ -72,18 +72,38 @@ public class SpliteratorPrimeNumberFinder {
 		Spliterator<Integer> spliterator3 = spliterator1 != null ? spliterator1.trySplit() : null;
 		Spliterator<Integer> spliterator4 = spliterator2 != null ? spliterator2.trySplit() : null;
 		
-		ExecutorService pool = Executors.newFixedThreadPool(4);
+
 		List<PrimeFinder> primeFinders = Arrays.asList(new PrimeFinder(spliterator1), 
 													   new PrimeFinder(spliterator2), 
 													   new PrimeFinder(spliterator3),
 													   new PrimeFinder(spliterator4));
+		return primeFinders;
+	}	
+
+	private static int countPrimes(List<PrimeFinder> primeFinders, ExecutorService pool) throws InterruptedException, ExecutionException {
+
 		List<Future<Integer>> futures = pool.invokeAll(primeFinders);
 		int totalPrimesFound = 0;
 		for (Future<Integer> nextFuture : futures) {
 			totalPrimesFound += nextFuture.get();
 		}
+
+		return totalPrimesFound;
+	}
+	
+	public static void main(String[] args)  {
+		ExecutorService pool = Executors.newFixedThreadPool(4);
+		List<PrimeFinder> primeFinders = getSpliterators();
 		
-		System.out.println("Total primes found: " + totalPrimesFound);
-		pool.shutdown();
+		try {
+			int totalPrimesFound = countPrimes(primeFinders, pool);
+			System.out.println("Total primes found: " + totalPrimesFound);
+		}
+		catch (InterruptedException | ExecutionException exception) {
+			exception.printStackTrace();
+		}
+		finally {
+			pool.shutdown();
+		}
 	}
 }

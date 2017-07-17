@@ -33,7 +33,7 @@ public class SpliteratorFinder {
 		// Split the list in POOL_SIZE pieces
 		List<Spliterator<String>> spliterators = new LinkedList<>();
 		spliterators.add(firstSpliterator);
-		splitInX(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / POOL_SIZE, POOL_SIZE);
+		split(firstSpliterator, spliterators, firstSpliterator.getExactSizeIfKnown() / POOL_SIZE, POOL_SIZE);
 		
 		// Print the spliterator data distribution
 		System.out.println("Spliterator estimated size vs. known size");
@@ -86,7 +86,7 @@ public class SpliteratorFinder {
 		executor.shutdownNow();
 	}
 
-	private static <T> void splitInX(Spliterator<T> spliterator, List<Spliterator<T>> handles, long targetSpliteratorSize, int maxSpliterators) {
+	private static <T> void split(Spliterator<T> spliterator, List<Spliterator<T>> handles, long targetSpliteratorSize, int maxSpliterators) {
 
 		if (handles.size() < maxSpliterators) {
 			Spliterator<T> peerSpliterator = spliterator.trySplit();
@@ -95,8 +95,8 @@ public class SpliteratorFinder {
 				handles.add(peerSpliterator);
 				
 				if (peerSpliterator.getExactSizeIfKnown() > targetSpliteratorSize) {
-					splitInX(peerSpliterator, handles, targetSpliteratorSize, maxSpliterators);
-					splitInX(spliterator, handles, targetSpliteratorSize, maxSpliterators);
+					split(peerSpliterator, handles, targetSpliteratorSize, maxSpliterators);
+					split(spliterator, handles, targetSpliteratorSize, maxSpliterators);
 				}
 			}
 		}
