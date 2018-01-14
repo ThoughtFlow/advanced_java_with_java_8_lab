@@ -14,7 +14,7 @@ public class Currying
                 func = list -> list.stream().reduce(0d, (l, r) -> l + r) / list.size();
                 break;
 
-            case WORSE :
+            case WORST :
                 func = list -> list.stream().min((l, r) -> l < r ? -1 : l > r ? 1 : 0).orElseGet(() -> 0d);
                 break;
 
@@ -35,13 +35,13 @@ public class Currying
     	
         System.out.println(curryingFunction.apply(GradeCalcType.AVERAGE).apply(scores));
         System.out.println(curryingFunction.apply(GradeCalcType.BEST).apply(scores));
-        System.out.println(curryingFunction.apply(GradeCalcType.WORSE).apply(scores));
+        System.out.println(curryingFunction.apply(GradeCalcType.WORST).apply(scores));
     }
 
     private enum GradeCalcType
     {
         AVERAGE,
-        WORSE,
+        WORST,
         BEST
     }
 }
