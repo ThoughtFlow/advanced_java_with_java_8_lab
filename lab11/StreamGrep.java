@@ -1,4 +1,4 @@
-package lab13;
+package lab11;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,12 +54,6 @@ public class StreamGrep {
 		return in.lines().map(String::toUpperCase).filter(s -> s.contains(upperCaseSearchWord)).collect(Collectors.toList());
 	}
 	
-	private static BufferedReader getReader(String stringedUrl) throws IOException {
-	
-       URL url = new URL(stringedUrl);
-	   return new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
-	}
-	
 	public static void main(String... args) {
 
 		final String wordSearch = "JAVA";
@@ -79,14 +73,14 @@ public class StreamGrep {
 //			e.printStackTrace();
 //		}
 		
-		try (BufferedReader bufferedReader = getReader(url)) {
+		try (BufferedReader bufferedReader = Util.getReader(url)) {
 			System.out.println("Using grepDashCWithReduce - Found: " + grepDashCWithReduce(bufferedReader, wordSearch));
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		try (BufferedReader bufferedReader = getReader(url)) {
+		try (BufferedReader bufferedReader = Util.getReader(url)) {
 			System.out.println("Using grepCollect - found :");
 			grepCollect(bufferedReader, wordSearch).forEach(System.out::println);
 		}

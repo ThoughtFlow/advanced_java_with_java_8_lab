@@ -1,4 +1,4 @@
-package lab13;
+package lab11;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -14,6 +14,7 @@ public class PredicateCompositionWithStreams {
 		// Need only change the predicate definitions
 		Predicate<Double[]> isAllPassed = e -> Arrays.stream(e).noneMatch(g -> g < .60);
 		Predicate<Double[]> isBAverage = e -> Arrays.stream(e).reduce(0d, (l, r) -> l + r) / e.length >= .80;
+//		Predicate<Double[]> isBAverage = e -> Arrays.stream(e).mapToDouble(d -> d).average().orElse(0) >= .8;
 		Predicate<Double[]> isLastPerfect = e -> e[e.length - 1] == 1; 
 		Predicate<Double[]> isAnyMissed = e -> Arrays.stream(e).anyMatch(x -> x == 0);
 		

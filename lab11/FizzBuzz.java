@@ -1,4 +1,4 @@
-package lab13;
+package lab11;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -36,8 +36,8 @@ public class FizzBuzz
 	
     public static void main(String... args)
     {
-    	getFizzBuzzList(1, 100).forEach(System.out::println);
-    	getFizzBuzzListWithCurrying(1, 100).forEach(System.out::println);
+    		getFizzBuzzList(1, 100).forEach(System.out::println);
+    		getFizzBuzzListWithCurrying(1, 100).forEach(System.out::println);
     }
 
     private static class Holder

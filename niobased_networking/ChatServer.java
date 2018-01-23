@@ -1,4 +1,4 @@
-package lab11;
+package niobased_networking;
 
 import java.io.Closeable;
 import java.io.IOException;

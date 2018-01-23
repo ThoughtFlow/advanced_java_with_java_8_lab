@@ -1,4 +1,4 @@
-package lab13;
+package lab11;
 
 import java.util.function.IntPredicate;
 import java.util.stream.IntStream;

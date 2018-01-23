@@ -1,4 +1,4 @@
-package lab13;
+package lab11;
 
 import java.util.Random;
 import java.util.function.Function;
