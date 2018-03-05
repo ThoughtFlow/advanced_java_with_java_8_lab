@@ -31,7 +31,7 @@ public class Currying
 
     public static void main(String... args)
     {
-    	List<Double> scores = Arrays.asList(.65, .75, .85);
+    		List<Double> scores = Arrays.asList(.65, .75, .85);
     	
         System.out.println(curryingFunction.apply(GradeCalcType.AVERAGE).apply(scores));
         System.out.println(curryingFunction.apply(GradeCalcType.BEST).apply(scores));

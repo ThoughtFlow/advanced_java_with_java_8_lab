@@ -57,6 +57,8 @@ public class Promises {
 				System.out.println("Result: " + task3.get());
 				System.out.println("Result: " + task4.get());
 			}
+
+
 			
 			{
 				printTestHeader("All tasks run under same thread sequentially using this thread");
