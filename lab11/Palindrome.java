@@ -25,6 +25,7 @@ public class Palindrome
             nextWord = nextWord.toLowerCase();
             nextWord = nextWord.replace(" ", "");
             nextWord = nextWord.replace(",", "");
+            nextWord = nextWord.replace("'", "");
             boolean isPalindrome = true;
             int halfWay = nextWord.length() / 2 - 1;
             for (int index = 0; index < halfWay; ++index)
@@ -110,7 +111,7 @@ public class Palindrome
         findPalindromeKeepOriginal(palindromes).forEach(System.out::println);
         
         // Variations
-        //findPalindrome(palindromes).forEach(System.out::println);
+//        findPalindrome(palindromes).forEach(System.out::println);
         //findPalindromeKeepOriginalConcise(palindromes).forEach(System.out::println);
         //findPalindromeImperative(palindromes).forEach(System.out::println);
     }

@@ -46,7 +46,7 @@ public class PromisesPrimeNumberFinderExceptions {
 			int range = index;
 
 			// Now we have an exceptionally clause - no more exception
-			CompletableFuture<Integer> nextPromise =    
+			CompletableFuture<Integer> nextPromise =     
 					CompletableFuture.supplyAsync(() -> countPrimes(range * K, range * K + K - 1)).exceptionally(i -> 0);
 
 			 //Having no exceptionally clause will result in an exception being thrown

@@ -29,9 +29,9 @@ public class Life
 
         for (int index = 0; index < 1; index++)
         {
-            System.out.println(execute("Imperative", ImperativeLife::getNextGeneration, firstGeneration, generations));
-            System.out.println(execute("Functional Serial", FunctionalLife::getNextGenerationSerial, firstGeneration, generations));
-            System.out.println(execute("Functional Parallel", FunctionalLife::getNextGenerationParallel, firstGeneration, generations));
+//            System.out.println(execute("Imperative", ImperativeLife::getNextGeneration, firstGeneration, generations));
+//            System.out.println(execute("Functional Serial", FunctionalLife::getNextGenerationSerial, firstGeneration, generations));
+//            System.out.println(execute("Functional Parallel", FunctionalLife::getNextGenerationParallel, firstGeneration, generations));
             System.out.println(execute("Functional Parallel Plus", FunctionalLife::getNextGenerationFunctionalPlus, firstGeneration, generations));
         }
     }

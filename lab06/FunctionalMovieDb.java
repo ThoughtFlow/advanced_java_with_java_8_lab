@@ -31,7 +31,7 @@ public class FunctionalMovieDb implements MovieDb {
 			database.compute(category, (k, v) -> {v.add(movieToAdd); return v;});
 		});
 	}
-
+	
 	@Override
 	public void add(Category category, String name, Integer yearReleased) {
 
@@ -39,7 +39,7 @@ public class FunctionalMovieDb implements MovieDb {
 		categories.add(category);
 		add(categories, name, yearReleased);
 	}
-
+	
 	@Override
 	public Movie findByName(String name) {
 		// Can't use a simple Movie class because it will be immutable within lambda. 
@@ -52,7 +52,6 @@ public class FunctionalMovieDb implements MovieDb {
 
 		return foundMovie.get();
 	}
-	
 	
 	@Override
 	public List<String> findByCategory(Category category) {
